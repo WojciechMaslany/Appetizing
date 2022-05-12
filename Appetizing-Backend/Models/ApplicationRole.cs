@@ -3,7 +3,7 @@ using MongoDbGenericRepository.Attributes;
 
 namespace Appetizing_Backend.Models
 {
-    [CollectionName("Users")]
+    [CollectionName("Roles")]
     public class ApplicationRole : MongoIdentityRole<Guid>
     {
     }

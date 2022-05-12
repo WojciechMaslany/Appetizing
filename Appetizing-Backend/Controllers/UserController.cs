@@ -4,20 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Appetizing_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : Controller
     {
         private UserManager<ApplicationUser> _userManager;
-        public UserController(UserManager<ApplicationUser> userManager)
+        private RoleManager<ApplicationRole> _roleManager;
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             this._userManager = userManager;
+            this._roleManager = roleManager;
         }
-        public IActionResult Create()
-        {
-            return View();
-        }
-
 
         [HttpPost]
         public async Task<IActionResult> Create(User user)
@@ -35,14 +32,36 @@ namespace Appetizing_Backend.Controllers
                     return Ok("User created successfully");
                 else
                 {
+                    string errors = "";
                     foreach (IdentityError error in result.Errors)
                     {
-                        ModelState.AddModelError(string.Empty, error.Description);
+                        errors += error.Description + " ";
                     }
-                    return Ok("User failed");
+                    return Ok(errors);
                 }
             }
             return BadRequest("Does not match");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRole(UserRole userRole)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityResult result = await _roleManager.CreateAsync(new ApplicationRole() { Name = userRole.RoleName});
+                if (result.Succeeded)
+                    return Ok("Role created successfully.");
+                else
+                {
+                    string errors = "";
+                    foreach (IdentityError error in result.Errors)
+                    {
+                        errors += error.Description + " ";
+                    }
+                    return Ok(errors);
+                }
+            }
+            return BadRequest("Nothing happened.");
         }
     }
 }
