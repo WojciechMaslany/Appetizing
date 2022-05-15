@@ -18,9 +18,18 @@ namespace Appetizing_Backend.Services
             return recipe;
         }
 
+        public void DeleteRecipe(string id) => _recipes.DeleteOne(recipe => recipe.Id == id);
+
         public Recipe GetRecipe(string id) => _recipes.Find(recipe => recipe.Id == id).First();
            
 
         public List<Recipe> GetRecipes() => _recipes.Find(recipe => true).ToList();
+
+        public Recipe UpdateRecipe(Recipe recipe)
+        {
+            GetRecipe(recipe.Id);
+            _recipes.ReplaceOne(r => r.Id == recipe.Id, recipe);
+            return recipe;
+        }
     }
 }

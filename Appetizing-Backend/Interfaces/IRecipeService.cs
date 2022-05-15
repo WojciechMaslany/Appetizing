@@ -7,5 +7,7 @@ namespace Appetizing_Backend.Interfaces
         List<Recipe> GetRecipes();
         Recipe AddRecipe(Recipe recipe);
         Recipe GetRecipe(string id);
+        void DeleteRecipe(string id);
+        Recipe UpdateRecipe(Recipe recipe);
     }
 }

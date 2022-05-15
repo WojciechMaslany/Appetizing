@@ -27,11 +27,24 @@ namespace Appetizing_Backend.Controllers
             return Ok(_recipeService.GetRecipe(id));
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteRecipe(string id)
+        {
+            _recipeService.DeleteRecipe(id);
+            return NoContent();
+        }
+
         [HttpPost]
         public IActionResult AddRecipe(Recipe recipe)
         {
             _recipeService.AddRecipe(recipe);
             return CreatedAtRoute("GetRecipe", new { id = recipe.Id }, recipe);
+        }
+
+        [HttpPut]
+        public IActionResult UpdateRecipe(Recipe recipe)
+        {
+            return Ok(_recipeService.UpdateRecipe(recipe));
         }
     }
 }
