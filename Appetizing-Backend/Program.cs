@@ -1,4 +1,6 @@
+using Appetizing_Backend.Interfaces;
 using Appetizing_Backend.Models;
+using Appetizing_Backend.Services;
 using Appetizing_Backend.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,11 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var mongoDbSettings = builder.Configuration.GetSection(nameof(MongoDbConfig)).Get<MongoDbConfig>();
 
+builder.Services.Configure<MongoDbConfig>(builder.Configuration.GetSection("MongoDbConfig"));
+builder.Services.AddSingleton<MongoDbConfig>();
+
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(
     mongoDbSettings.ConnectionString, mongoDbSettings.Name
     );
 
+builder.Services.AddSingleton<IDbClient, DbClient>();
+builder.Services.AddTransient<IRecipeService, RecipeService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
