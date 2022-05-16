@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appetizing-Backend", "Appetizing-Backend\Appetizing-Backend.csproj", "{57E54B85-75D5-4A33-A9A7-204F68E4A161}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Appetizing-Backend", "Appetizing-Backend\Appetizing-Backend.csproj", "{57E54B85-75D5-4A33-A9A7-204F68E4A161}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Appetizing-Frontend", "Appetizing-Frontend\Appetizing-Frontend.esproj", "{EC0151E9-0604-47CA-8A65-F3E3633D6D9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,12 @@ Global
 		{57E54B85-75D5-4A33-A9A7-204F68E4A161}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57E54B85-75D5-4A33-A9A7-204F68E4A161}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57E54B85-75D5-4A33-A9A7-204F68E4A161}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC0151E9-0604-47CA-8A65-F3E3633D6D9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC0151E9-0604-47CA-8A65-F3E3633D6D9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC0151E9-0604-47CA-8A65-F3E3633D6D9F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EC0151E9-0604-47CA-8A65-F3E3633D6D9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC0151E9-0604-47CA-8A65-F3E3633D6D9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC0151E9-0604-47CA-8A65-F3E3633D6D9F}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
