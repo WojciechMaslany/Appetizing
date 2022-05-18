@@ -14,6 +14,10 @@ body{
     font-family: 'Roboto', sans-serif;
 }
 
+a{
+    text-decoration: none;
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -28,6 +32,46 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .logo{
+        font-size: 1.5em;
+        font-weight: bolder;
+        color: var(--primary-color);
+        text-shadow: 0 1px 3px var(--shadow-color);
+        span{
+            color: var(--text-color);
+        }
+    }
+}
+
+.nav-links{
+    a{
+        margin-left: 1em;
+        color: var(--text-light);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        position: relative;
+        &::before{
+            content: '';
+            display: inline-block;
+            height: 3px;
+            width: 100%;
+            background-color: var(--primary-color);
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            transform: scaleX(0);
+            transition: transform calc(var(--animation-speed) * 0.2s) ease-in-out;
+        }
+        &:hover{
+            &::before{
+                transform: scaleX(1);
+            }
+        }
+        &.active{
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+    }
 }
 
 .container{
