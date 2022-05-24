@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Appetizing_Backend.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]/[action]")]
     public class RecipeController : Controller
     {
         // dependency injection
