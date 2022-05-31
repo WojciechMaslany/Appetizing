@@ -1,6 +1,7 @@
 // import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import IntroductionSection from "./components/IntroductionSection";
+import Improve from "./components/ImproveSection";
 // import { Recipe } from "./components/Recipe"
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
       <Navbar />
       <div className="container main">
         <IntroductionSection/>
+        <Improve/>
       </div>
     </div>
   );
