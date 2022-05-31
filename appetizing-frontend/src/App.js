@@ -2,6 +2,7 @@
 import Navbar from "./components/Navbar";
 import IntroductionSection from "./components/IntroductionSection";
 import Improve from "./components/ImproveSection";
+import ChefsSection from "./components/ChefsSection";
 // import { Recipe } from "./components/Recipe"
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <div className="container main">
         <IntroductionSection/>
         <Improve/>
+        <ChefsSection/>
       </div>
     </div>
   );
