@@ -1,20 +1,29 @@
-// import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
+import { 
+  BrowserRouter as Router, 
+  Route, 
+  Routes 
+} from "react-router-dom";
+
+
 import Navbar from "./components/Navbar";
-import IntroductionSection from "./components/IntroductionSection";
-import Improve from "./components/ImproveSection";
-import ChefsSection from "./components/ChefsSection";
+
+import Home from "./pages/Home";
+import RecipesList from "./pages/RecipesList";
+import Settings from "./pages/Settings";
 // import { Recipe } from "./components/Recipe"
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
+    <Router>
+      <Navbar/>
       <div className="container main">
-        <IntroductionSection/>
-        <Improve/>
-        <ChefsSection/>
+        <Routes>
+          <Route path="/" element= {<Home/>} />
+          <Route path="/recipes" element= {<RecipesList/>} />
+          <Route path="/settings" element= {<Settings/>} />
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 
