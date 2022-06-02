@@ -16,6 +16,7 @@
 body{
     font-size: var(--font-size);
     font-family: 'Roboto', sans-serif;
+    padding-top: 55px;
 }
 
 a{
@@ -67,6 +68,7 @@ img {
 
 .section {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     margin-bottom: 3vw;
     .title {
@@ -96,10 +98,29 @@ img {
 }
 
 .container{
-    padding-inline: 12vw;
+    padding-inline: 25vw;
 }
 
 @import "partials/animations.scss";
+
+@media screen and (max-width: 1280px) {
+    .container{
+        padding-inline: 18vw;
+    }
+}
+
+@media screen and (max-width: 1050px) {
+    .container{
+        padding-inline: 12vw;
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .container{
+        padding-inline: 18vw;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .navbar{
         .logo{
@@ -112,7 +133,36 @@ img {
             display: block;
         }
     }
+    .section{
+        .col{
+            width: 100%;
+            padding: 0 !important;
+            text-align: center;
+            margin-bottom: 2em;
+        }
+    }
+
+    .skill-item{
+        display: inline-block;
+        margin: .75em;
+    }
+    .section.improve .btn{
+        display: block;
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .chief-card{
+        box-shadow: 0 5px 10px var(--shadow-color);
+    }
+
     .container{
-        padding-inline: 10vw;
+        padding-inline: 6vw;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container{
+        padding-inline: 3vw;
     }
 }
