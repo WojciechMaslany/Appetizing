@@ -94,6 +94,29 @@ img {
 @import "partials/chefs-section";
 @import "partials/searches";
 
+.img-preview{
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+    border: 3px solid var(--background-light);
+    box-shadow: 0 1px 3px var(--shadow-color);
+    margin-top: -50px;
+}
+
+.invalid-field {
+    border-color: #dc3545;
+    color: #dc3545;
+    background-color: #fff;
+}
+
+.form-file {
+    font-size: small;
+}
+
+.form-control {
+    font-size: small;
+}
+
 .recipe-card-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

@@ -10,9 +10,11 @@ namespace Appetizing_Backend.Controllers
     {
         // dependency injection
         private readonly IRecipeService _recipeService;
-        public RecipeController(IRecipeService recipeService)
+        private readonly IWebHostEnvironment _hostEnvironment;
+        public RecipeController(IRecipeService recipeService, IWebHostEnvironment hostEnvironment)
         {
             _recipeService = recipeService;
+            this._hostEnvironment = hostEnvironment;
         }
 
         [HttpGet]
@@ -35,8 +37,9 @@ namespace Appetizing_Backend.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddRecipe(Recipe recipe)
+        public async Task<IActionResult> AddRecipe([FromForm]Recipe recipe)
         {
+            recipe.ImageName = await SaveImage(recipe.ImageFile);
             _recipeService.AddRecipe(recipe);
             return CreatedAtRoute("GetRecipe", new { id = recipe.Id }, recipe);
         }
@@ -45,6 +48,20 @@ namespace Appetizing_Backend.Controllers
         public IActionResult UpdateRecipe(Recipe recipe)
         {
             return Ok(_recipeService.UpdateRecipe(recipe));
+        }
+
+        [NonAction]
+        public async Task<string> SaveImage(IFormFile imageFile)
+        {
+            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(" ", "-");
+            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+
+            using (var fileStream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+            return imageName;
         }
     }
 }
