@@ -1,27 +1,38 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSearch } from "@fortawesome/free-solid-svg-icons"
+import Searches from "../components/Searches"
+import RecipeCard from "../components/RecipeCard"
 
 export default function RecipesList() {
 
-    const searches = ['pizza', 'burger', 'cookies', 'juice', 'biriyani', 'salad', 'ice cream', 'lasagna', 'pudding', 'soup']
+    const recipes = [
+        {
+            title: "Cheesecake",
+            image: "/img/gallery/cheesecake.jpg",
+            authorImg: "/img/top-chefs/Bluebird.jpg",
+        }, 
+        {
+            title: "Pancakes",
+            image: "/img/gallery/pancakes.jpg",
+            authorImg: "/img/top-chefs/cheng.jpg",
+        },
+        {
+            title: "Bolognese",
+            image: "/img/gallery/bolognese.jpg",
+            authorImg: "/img/top-chefs/Sebastian.jpg",
+        },
+        {
+            title: "Bruschetta",
+            image: "/img/gallery/bruschetta.jpg",
+            authorImg: "/img/top-chefs/dahiana.jpg",
+        }
+    ].sort(() => Math.random() - 0.5)
 
     return (
         <div>
-            <div className="previous-searches">
-                <h2>Previous searches</h2>
-                <div className="previous-searches-container">
-                    { searches.map((search, index) => (
-                        <div key={index} style={{animationDelay: index * .1 + "s"}} className="search-item">
-                            {search}
-                        </div>
-                    ))}
-                </div>
-                <div className="search-box">
-                    <input type="text" placeholder="Search..."/>
-                    <button className="btn">
-                        <FontAwesomeIcon icon={faSearch}/>
-                    </button>
-                </div>
+            <Searches/>
+            <div className="recipe-card-container">
+                {recipes.map((recipe, index) => (
+                    <RecipeCard key={index} recipe={recipe}/>
+                ))}
             </div>
         </div>
     )
