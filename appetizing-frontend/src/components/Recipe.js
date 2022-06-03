@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import { Component } from 'react';
 import { variables } from '../Variables';
 
 export class Recipe extends Component {
@@ -7,20 +7,16 @@ export class Recipe extends Component {
         super(props);
 
         this.state={
-            recipes:[]
+            loading: true,
+            recipe: null,
         }
     }
 
-    refreshList() {
-        fetch(variables.API_URL+'Recipe/GetRecipes')
-        .then(response=>response.json())
-        .then(data=>{
-            this.setState({recipes:data})
-        })
-    }
-
-    componentDidMount(){
-        this.refreshList();
+    async componentDidMount(){
+        const response = await fetch(variables.API_URL+'Recipe/GetRecipes');
+        const data = await response.json();
+        this.setState({recipe: data.results[0]})
+        console.log(data.results[0])
     }
 
     render() {
@@ -29,28 +25,7 @@ export class Recipe extends Component {
         } = this.state;
 
         return(
-            <div className="container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                Description
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {recipes.map(rec =>
-                            <tr key={rec.id}>
-                                <td>{rec.RecipeName}</td>
-                                <td>{rec.RecipeDescription}</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
-        )
+            recipes
+        )       
     }
 }
