@@ -20,14 +20,18 @@ namespace Appetizing_Backend.Controllers
         [HttpGet]
         public IActionResult GetRecipes()
         {
-            return Ok(_recipeService.GetRecipes());
+            return Ok(_recipeService.GetRecipes().Select(x => new Recipe()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                ImageName = x.ImageName,
+                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName)
+            }));
         }
 
         [HttpGet("{id}", Name = "GetRecipe")]
-        public IActionResult GetRecipe(string id)
-        {
-            return Ok(_recipeService.GetRecipe(id));
-        }
+        public IActionResult GetRecipe(string id) => Ok(_recipeService.GetRecipe(id));
 
         [HttpDelete("{id}")]
         public IActionResult DeleteRecipe(string id)
@@ -45,8 +49,13 @@ namespace Appetizing_Backend.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateRecipe(Recipe recipe)
+        public async Task<IActionResult> UpdateRecipe([FromForm] Recipe recipe)
         {
+            if (recipe.ImageFile != null)
+            {
+                DeleteImage(recipe.ImageName);
+                recipe.ImageName = await SaveImage(recipe.ImageFile);
+            }
             return Ok(_recipeService.UpdateRecipe(recipe));
         }
 
@@ -62,6 +71,14 @@ namespace Appetizing_Backend.Controllers
                 await imageFile.CopyToAsync(fileStream);
             }
             return imageName;
+        }
+
+        [NonAction]
+        public void DeleteImage(string imageName)
+        {
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
         }
     }
 }

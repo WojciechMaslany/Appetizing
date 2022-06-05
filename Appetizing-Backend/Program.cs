@@ -2,6 +2,7 @@ using Appetizing_Backend.Interfaces;
 using Appetizing_Backend.Models;
 using Appetizing_Backend.Services;
 using Appetizing_Backend.Settings;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Images")),
+    RequestPath = "/Images"
+});
 
 app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);

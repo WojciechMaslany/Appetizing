@@ -1,13 +1,13 @@
 import Searches from "../components/Searches"
 import RecipeCard from "../components/RecipeCard"
-import useFetch from "../useFetch";
 import { variables } from "../Variables"
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const defaultImageSrc = 'img/gallery/cod.jpg'
+const defaultImageSrc = 'img/gallery/no_image.jpg'
 
 const initialFieldValues = {
+    id: null,
     recipeName: '',
     recipeDescription: '',
     imageName: '',
@@ -26,12 +26,22 @@ export default function RecipesList() {
         })
     }
 
-    const recipeAPI = (url = variables.API_URL + 'Recipe/AddRecipe') => {
+    const [recipeList, setRecipeList] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [recipeForEdit, setRecipeForEdit] = useState(null)
+
+    useEffect(() => {
+        if(loading === true) {
+            refreshRecipeList();
+        }       
+    },)
+
+    const recipeAPI = (url = variables.API_URL + 'Recipe/') => {
         return {
-            fetchAll: () => axios.get(url),
-            create: newRecord => axios.post(url, newRecord),
-            update: (id, updatedRecord) => axios.put(url + id, updatedRecord),
-            delete: id => axios.delete(url + id)
+            fetchAll: () => axios.get(url + "GetRecipes"),
+            create: newRecord => axios.post(url + "AddRecipe", newRecord),
+            update: (updatedRecord) => axios.put(url + "UpdateRecipe", updatedRecord),
+            delete: id => axios.delete(url + "DeleteRecipe/" + id)
         }
     }
 
@@ -43,6 +53,7 @@ export default function RecipesList() {
                 setValues({
                     ...values,
                     imageFile,
+                    imageName: imageFile.name,
                     imageSrc: x.target.result
                 })
             }
@@ -76,7 +87,9 @@ export default function RecipesList() {
         e.preventDefault()
         if(validate()) {
             const formData = new FormData();
-            values.imageName = values.imageFile.name;
+            if(values.id != null) {
+                formData.append('id', values.id)
+            }
             formData.append('name', values.recipeName);
             formData.append('description', values.recipeDescription);
             formData.append('imageName', values.imageName);
@@ -87,44 +100,55 @@ export default function RecipesList() {
 
     const applyErrorClass = field => ((field in errors && errors[field] === false)?' invalid-field': '')
 
-    // const { data, loading, error } = useFetch(variables.API_URL+'Recipe/GetRecipes');
-    
-    // if (loading) console.log("im loading")
-    // if (error) console.log(error);
-    // const recipes = data;
-
-    // const makePostRequest = async () => {
-    //     let res = await axios.post(variables.API_URL+'Recipe/AddRecipe', {name: "Testing321",
-    //     description: "Testing123",                            
-    //     })
-    //     console.log(res);
-    // };
-
-    // const [image, setImage] = useState('');
-    // const handleChange = (e) => {
-    //     console.log(e.target.files);
-    //     setImage(e.target.files[0])
-    // }
-
     const addOrEdit = (formData, onSuccess) => {
-        recipeAPI().create(formData)
+        if(formData.get('id') === null) {
+            recipeAPI().create(formData)
+            .then(res => {
+                onSuccess();
+                refreshRecipeList();
+            })
+            .catch(err => console.log(err))
+        }
+        else {
+            recipeAPI().update(formData)
         .then(res => {
             onSuccess();
+            refreshRecipeList();
         })
+        .catch(err => console.log(err))
+        }
+    }
+
+    function refreshRecipeList() {
+        setLoading(true);
+        recipeAPI().fetchAll()
+        .then(res => {
+            setRecipeList(res.data);
+            setLoading(false);
+        })
+        .catch(err => {
+            console.log(err);
+            setLoading(false);
+        })
+    }
+
+    const onDelete = (id) => {
+        recipeAPI().delete(id)
+        .then(res => refreshRecipeList())
         .catch(err => console.log(err))
     }
 
-    // const handleApi = async () => {
-    //     const formData = new FormData();
-    //     formData.append('name', 'Test987')
-    //     formData.append('description', 'Test987')
-    //     formData.append('imageName', 'Test987')
-    //     formData.append('imageFile', 'Test987')
-    //     console.log(formData);
-    //     let res = await axios.post(variables.API_URL+'Recipe/AddRecipe', {formData                      
-    //     })
-    //     console.log(res);
-    // }
+    useEffect(() => {
+        if (recipeForEdit != null)
+        setValues({
+            id: recipeForEdit.id,
+            recipeName: recipeForEdit.name,
+            recipeDescription: recipeForEdit.description,
+            imageName: recipeForEdit.imageName,
+            imageSrc: recipeForEdit.imageSrc,
+            imageFile: null
+        })
+    }, [recipeForEdit])
 
     return (
         <div>
@@ -154,11 +178,11 @@ export default function RecipesList() {
                 </div>
             </form>
 
-            {/* <div className="recipe-card-container">
-                {recipes?.map((recipe, index) => (
-                    <RecipeCard key={index} recipe={recipe}/>
+            <div className="recipe-card-container">
+                {recipeList?.map((recipe, index) => (
+                        <RecipeCard key={index} recipe={recipe} props={onDelete}/>
                 ))}
-            </div> */}
+            </div>
         </div>
     )
 }
@@ -169,3 +193,22 @@ export default function RecipesList() {
                 <input type="file" onChange={handleChange}/>
                 <button onClick={handleApi}>SUBMIT</button>
             </div> */}
+
+            // const { data, loading, error } = useFetch(variables.API_URL+'Recipe/GetRecipes');
+    
+    // if (loading) console.log("im loading")
+    // if (error) console.log(error);
+    // const recipes = data;
+
+    // const makePostRequest = async () => {
+    //     let res = await axios.post(variables.API_URL+'Recipe/AddRecipe', {name: "Testing321",
+    //     description: "Testing123",                            
+    //     })
+    //     console.log(res);
+    // };
+
+    // const [image, setImage] = useState('');
+    // const handleChange = (e) => {
+    //     console.log(e.target.files);
+    //     setImage(e.target.files[0])
+    // }

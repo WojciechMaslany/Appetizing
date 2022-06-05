@@ -1,4 +1,4 @@
-export default function Improve() {
+export default function Improve(props) {
     const list = [
         "Learn new recipes",
         "Experiment with food",
@@ -18,7 +18,7 @@ export default function Improve() {
                 { list.map((item, index) => (
                     <p className="skill-item" key={index}>{item}</p>
                 ))}
-                <button className="btn">Signup now</button>
+                <button className="btn" onClick={props.props}>Signup now</button>
             </div>
         </div>
     )

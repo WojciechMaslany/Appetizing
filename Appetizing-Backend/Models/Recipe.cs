@@ -11,10 +11,13 @@ namespace Appetizing_Backend.Models
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
 
-        public string ImageName { set; get; }
+        public string? ImageName { set; get; }
 
         [BsonIgnore]
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
+
+        [BsonIgnore]
+        public string? ImageSrc { get; set; }
         /*public string Difficulty { get; set; }
         public int Servings { get; set; }
         public string CuisineType { get; set; }

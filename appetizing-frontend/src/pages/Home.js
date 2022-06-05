@@ -3,6 +3,7 @@ import Improve from "../components/ImproveSection";
 import ChefsSection from "../components/ChefsSection";
 
 export default function Home() {
+
     return (
         <div>
             <IntroductionSection/>
