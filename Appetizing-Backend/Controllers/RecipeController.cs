@@ -33,9 +33,10 @@ namespace Appetizing_Backend.Controllers
         [HttpGet("{id}", Name = "GetRecipe")]
         public IActionResult GetRecipe(string id) => Ok(_recipeService.GetRecipe(id));
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteRecipe(string id)
+        [HttpDelete("{id}/{imageName}")]
+        public IActionResult DeleteRecipe(string id, string imageName)
         {
+            DeleteImage(imageName);
             _recipeService.DeleteRecipe(id);
             return NoContent();
         }

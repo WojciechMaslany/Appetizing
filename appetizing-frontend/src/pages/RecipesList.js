@@ -41,7 +41,7 @@ export default function RecipesList() {
             fetchAll: () => axios.get(url + "GetRecipes"),
             create: newRecord => axios.post(url + "AddRecipe", newRecord),
             update: (updatedRecord) => axios.put(url + "UpdateRecipe", updatedRecord),
-            delete: id => axios.delete(url + "DeleteRecipe/" + id)
+            delete: (id, imageName) => axios.delete(`${url}DeleteRecipe/${id}/${imageName}`)
         }
     }
 
@@ -132,8 +132,8 @@ export default function RecipesList() {
         })
     }
 
-    const onDelete = (id) => {
-        recipeAPI().delete(id)
+    const onDelete = (recipe) => { 
+        recipeAPI().delete(recipe.id, recipe.imageName)
         .then(res => refreshRecipeList())
         .catch(err => console.log(err))
     }
@@ -149,6 +149,10 @@ export default function RecipesList() {
             imageFile: null
         })
     }, [recipeForEdit])
+
+    const showRecordDetails = recipe => {
+        setRecipeForEdit(recipe);
+    }
 
     return (
         <div>
@@ -180,7 +184,7 @@ export default function RecipesList() {
 
             <div className="recipe-card-container">
                 {recipeList?.map((recipe, index) => (
-                        <RecipeCard key={index} recipe={recipe} props={onDelete}/>
+                        <RecipeCard key={index} recipe={recipe} onDelete={onDelete} showRecordDetails={showRecordDetails}/>
                 ))}
             </div>
         </div>

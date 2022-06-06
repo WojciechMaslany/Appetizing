@@ -124,6 +124,7 @@ img {
 }
 
 .recipe-card { 
+    position: relative;
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 0 5px 15px var(--shadow-color);
@@ -160,15 +161,21 @@ img {
         color: var(--primary-color);
         margin-top: .75em;
         display: inline-block;
+        background:none;
+        border:none;
+        cursor: pointer;
     }
     .delete-recipe-btn {
         font-size: 1em;
         font-weight: bold;
         color: var(--primary-color);
         margin-top: .75em;
-        margin-left: 20.9em;
-
+        right: 15px;
+        background:none;
+        border:none;
+        cursor: pointer;
         display: inline-block;
+        position: absolute;
     }
 }
 
