@@ -31,7 +31,19 @@ namespace Appetizing_Backend.Controllers
         }
 
         [HttpGet("{id}", Name = "GetRecipe")]
-        public IActionResult GetRecipe(string id) => Ok(_recipeService.GetRecipe(id));
+        public IActionResult GetRecipe(string id)
+        {
+            var recipeRetrieved = _recipeService.GetRecipe(id);
+            var recipeToSend = new Recipe()
+            {
+                Id = recipeRetrieved.Id,
+                Name = recipeRetrieved.Name,
+                Description = recipeRetrieved.Description,
+                ImageName = recipeRetrieved.ImageName,
+                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, recipeRetrieved.ImageName)
+            };
+            return Ok(recipeToSend);
+        }
 
         [HttpDelete("{id}/{imageName}")]
         public IActionResult DeleteRecipe(string id, string imageName)
