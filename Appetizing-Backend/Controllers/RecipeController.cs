@@ -52,12 +52,11 @@ namespace Appetizing_Backend.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateRecipe([FromForm] Recipe recipe)
         {
-            if (recipe.ImageFile != null)
-            {
-                DeleteImage(recipe.ImageName);
-                recipe.ImageName = await SaveImage(recipe.ImageFile);
-            }
-            return Ok(_recipeService.UpdateRecipe(recipe));
+           
+           recipe.ImageName = await SaveImage(recipe.ImageFile);
+           var xd = _recipeService.GetRecipe(recipe.Id);
+           DeleteImage(xd.ImageName);
+           return Ok(_recipeService.UpdateRecipe(recipe));
         }
 
         [NonAction]
