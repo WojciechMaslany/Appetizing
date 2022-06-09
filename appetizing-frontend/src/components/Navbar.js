@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useState } from "react"
 import Sidebar from "./Sidebar"
 
-import { faHome, faList, faCog} from "@fortawesome/free-solid-svg-icons"
+import { faHome, faList, faCog, faRightToBracket} from "@fortawesome/free-solid-svg-icons"
 
 export default function Navbar() {
     const [showSidebar, setShowSidebar] = useState(false);
@@ -23,6 +23,11 @@ export default function Navbar() {
             name: "Settings",
             path: "/settings",
             icon: faCog
+        },
+        {
+            name: "Login",
+            path: "/login",
+            icon: faRightToBracket
         },
     ]
 

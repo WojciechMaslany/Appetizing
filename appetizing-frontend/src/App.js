@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import RecipesList from "./pages/RecipesList";
 import Settings from "./pages/Settings";
 import  Recipe  from "./components/Recipe"
+import  Login  from "./components/Login"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/recipes" element= {<RecipesList/>} />
           <Route path="/settings" element= {<Settings/>} />
           <Route path="/recipe/:id" element={<Recipe/>}/>
+          <Route path="/login" element= {<Login/>}/>
         </Routes>
       </div>
     </Router>

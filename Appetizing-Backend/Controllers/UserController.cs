@@ -1,67 +1,51 @@
-﻿using Appetizing_Backend.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Appetizing_Backend.Interfaces;
+using Appetizing_Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Appetizing_Backend.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Authorize]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : Controller
-    {
-        private UserManager<ApplicationUser> _userManager;
-        private RoleManager<ApplicationRole> _roleManager;
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+    {        
+        private readonly IUserService _userService;
+        public UserController(/*IConfiguration configuration, */IUserService userService)
         {
-            this._userManager = userManager;
-            this._roleManager = roleManager;
+            _userService = userService;
+        }
+
+        [HttpGet]
+        public ActionResult<List<User>> GetUsers()
+        {
+            return _userService.GetUsers();
+        }
+
+        [HttpGet("{id:length(24)}")]
+        public ActionResult<User> GetUser (string id)
+        {
+            var user = _userService.GetUser(id);
+            return Json(user);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public ActionResult<User> Create(User user)
         {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser appUser = new ApplicationUser
-                {
-                    UserName = user.Name,
-                    Email = user.Email
-                };
-
-                IdentityResult result = await _userManager.CreateAsync(appUser, user.Password);
-                if (result.Succeeded)
-                    return Ok("User created successfully");
-                else
-                {
-                    string errors = "";
-                    foreach (IdentityError error in result.Errors)
-                    {
-                        errors += error.Description + " ";
-                    }
-                    return Ok(errors);
-                }
-            }
-            return BadRequest("Does not match");
+            _userService.Create(user);
+            return Json(user);
         }
 
+        [AllowAnonymous]
+        [Route("authenticate")]
         [HttpPost]
-        public async Task<IActionResult> CreateRole(UserRole userRole)
+        public ActionResult Login([FromBody] User user)
         {
-            if (ModelState.IsValid)
-            {
-                IdentityResult result = await _roleManager.CreateAsync(new ApplicationRole() { Name = userRole.RoleName});
-                if (result.Succeeded)
-                    return Ok("Role created successfully.");
-                else
-                {
-                    string errors = "";
-                    foreach (IdentityError error in result.Errors)
-                    {
-                        errors += error.Description + " ";
-                    }
-                    return Ok(errors);
-                }
-            }
-            return BadRequest("Nothing happened.");
+            var token = _userService.Authenticate(user.Email, user.Password);
+
+            if (token == null)
+                return Unauthorized();
+            return Ok(new { token, user });
         }
     }
 }

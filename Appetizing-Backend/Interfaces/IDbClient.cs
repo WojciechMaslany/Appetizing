@@ -6,5 +6,6 @@ namespace Appetizing_Backend.Interfaces
     public interface IDbClient
     {
         IMongoCollection<Recipe> GetRecipesCollection();
+        IMongoCollection<User> GetUsersCollection();
     }
 }
