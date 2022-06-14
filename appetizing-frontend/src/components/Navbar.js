@@ -29,6 +29,11 @@ export default function Navbar() {
             path: "/login",
             icon: faRightToBracket
         },
+        {
+            name: "Register",
+            path: "/register",
+            icon: faRightToBracket
+        },
     ]
 
     function closeSidebar() {
@@ -40,13 +45,13 @@ export default function Navbar() {
             <div className="navbar container">
                 <a href="#!" className="logo">A<span>pp</span>etizing</a>
                 <div className="nav-links">
-                    { links.map(link => (
+                    { links.map((link) => 
                         <Link to={link.path} 
                             className={location.pathname === link.path ? 
                             "active" : ""} 
                             key={link.name}>{link.name}
-                        </Link>
-                    ))}
+                        </Link>                     
+                    )}
                 </div>
                 <div onClick={() => setShowSidebar(true)} 
                     className={showSidebar ? "sidebar-btn active" : "sidebar-btn"}>

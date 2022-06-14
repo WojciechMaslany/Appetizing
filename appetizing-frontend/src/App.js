@@ -4,48 +4,133 @@ import {
   Routes 
 } from "react-router-dom";
 
-
-import Navbar from "./components/Navbar";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import Home from "./pages/Home";
 import RecipesList from "./pages/RecipesList";
 import Settings from "./pages/Settings";
 import  Recipe  from "./components/Recipe"
 import  Login  from "./components/Login"
+import Profile from "./components/Profile"
+import Register from "./components/Register"
+import NewRecipe from "./components/NewRecipe"
+import { logout } from "./actions/auth";
+import { clearMessage } from "./actions/message";
+import { history } from './helpers/history';
+import { Link} from "react-router-dom";
+import EventBus from "./common/EventBus";
 
-function App() {
-  return (
-    <Router>
-      <Navbar/>
-      <div className="container main">
-        <Routes>
-          <Route path="/" element= {<Home/>} />
-          <Route path="/recipes" element= {<RecipesList/>} />
-          <Route path="/settings" element= {<Settings/>} />
-          <Route path="/recipe/:id" element={<Recipe/>}/>
-          <Route path="/login" element= {<Login/>}/>
-        </Routes>
-      </div>
-    </Router>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.logOut = this.logOut.bind(this);
+
+    this.state = {
+      showModeratorBoard: false,
+      showAdminBoard: false,
+      currentUser: undefined,
+    };
+
+    history.listen((location) => {
+      props.dispatch(clearMessage());
+    });
+  }
+  componentDidMount() {
+    const user = this.props.user;
+
+    if (user) {
+      this.setState({
+        currentUser: user,
+      });
+    }
+    
+    EventBus.on("logout", () => {
+      this.logOut();
+    });
+  }
+
+  componentWillMount() {
+    const user = this.props.user;
+    if(user) {
+      this.setState({
+        currentUser: user
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    EventBus.remove("logout");
+  }
+
+  logOut() {
+    this.props.dispatch(logout());
+    this.setState({
+      currentUser: undefined
+    });
+  }
+
+  render() {
+    const { currentUser } = this.state;
+
+    return (
+      <Router history={history}>
+        <div>
+          <nav className="navbar container">
+            <Link to={"/"} className="logo">
+              A<span>pp</span>etizing
+            </Link>
+
+            {currentUser ? (
+              <div className="nav-links" >
+                  <Link to={"/recipes"} className="/login active">
+                    Recipes
+                  </Link>
+                  <Link to={"/profile"} className="/profile active">
+                    { currentUser.username }
+                  </Link>
+                  <Link to={"/login"} className="/logout active" onClick={ this.logOut }>
+                    LogOut
+                  </Link>
+              </div>
+            ) : (
+              <div className="nav-links">
+                  <Link to={"/recipes"} className="/login active">
+                    Recipes
+                  </Link>
+                  <Link to={"/login"} className="/login active">
+                    Login
+                  </Link>
+                  <Link to={"/register"} className="/register active">
+                    Sign Up
+                  </Link>
+              </div>
+            )}
+          </nav>
+          <div className="container main">
+            <Routes>
+              <Route path="/" element= {<Home/>} />
+              <Route path="/home" element= {<Home/>} />
+              <Route path="/login" element= {<Login/>}/>
+              <Route path="/recipes" element= {<RecipesList/>} />
+              <Route path="/settings" element= {<Settings/>} />
+              <Route path="/recipe/:id" element={<Recipe/>}/>
+              <Route path="/recipe" element={<NewRecipe/>}/>
+              <Route path="/profile" element= {<Profile/>}/>
+              <Route path="/register" element= {<Register/>}/>
+            </Routes>
+          </div>
+        </div>
+      </Router>
+    );
+  }
 }
 
-export default App;
+function mapStateToProps(state) {
+  const { user } = state.auth;
+  return {
+    user,
+  };
+}
 
-// <BrowserRouter>
-    // <div className="App">
-    //   <Navbar/>
-
-    //   <nav>
-    //     <ul>
-    //       <li>
-    //         <NavLink to="/recipe">Recipes</NavLink>
-    //       </li>
-    //     </ul>
-    //   </nav>
-
-    //   <Routes>
-    //     <Route path="/recipe" element={<Recipe/>}></Route>
-    //   </Routes>
-    // </div>
-    // </BrowserRouter>
+export default connect(mapStateToProps)(App);

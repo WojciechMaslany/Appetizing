@@ -9,5 +9,7 @@ namespace Appetizing_Backend.Interfaces
         Recipe GetRecipe(string id);
         void DeleteRecipe(string id);
         Recipe UpdateRecipe(Recipe recipe);
+        List<Recipe> SortByCuisine(string cuisine);
+        List<Recipe> SortByMealType(string mealType);
     }
 }

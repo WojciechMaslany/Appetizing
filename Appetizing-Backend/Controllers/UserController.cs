@@ -11,9 +11,11 @@ namespace Appetizing_Backend.Controllers
     public class UserController : Controller
     {        
         private readonly IUserService _userService;
-        public UserController(/*IConfiguration configuration, */IUserService userService)
+        private readonly IWebHostEnvironment _hostEnvironment;
+        public UserController(IUserService userService, IWebHostEnvironment hostEnvironment)
         {
             _userService = userService;
+            this._hostEnvironment = hostEnvironment;
         }
 
         [HttpGet]
@@ -26,12 +28,22 @@ namespace Appetizing_Backend.Controllers
         public ActionResult<User> GetUser (string id)
         {
             var user = _userService.GetUser(id);
-            return Json(user);
+            var userToSend = new User()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Username = user.Username,
+                Password = user.Password,
+                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImageName)
+            };
+            return Json(userToSend);
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        public ActionResult<User> Create(User user)
+        public async Task<IActionResult> Create([FromForm]User user)
         {
+            user.ImageName = await SaveImage(user.ImageFile);
             _userService.Create(user);
             return Json(user);
         }
@@ -41,11 +53,44 @@ namespace Appetizing_Backend.Controllers
         [HttpPost]
         public ActionResult Login([FromBody] User user)
         {
-            var token = _userService.Authenticate(user.Email, user.Password);
+            var token = _userService.Authenticate(user.Username, user.Password);
+            user = _userService.GetUserByUsername(user.Username);
 
             if (token == null)
                 return Unauthorized();
-            return Ok(new { token, user });
+            user.accessToken = token;
+            var userToSend = new User()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Username = user.Username,
+                Password = user.Password,
+                accessToken = token,
+                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImageName)
+            };
+            return Ok(userToSend);
+        }
+
+        [NonAction]
+        public async Task<string> SaveImage(IFormFile imageFile)
+        {
+            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(" ", "-");
+            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+
+            using (var fileStream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+            return imageName;
+        }
+
+        [NonAction]
+        public void DeleteImage(string imageName)
+        {
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
         }
     }
 }

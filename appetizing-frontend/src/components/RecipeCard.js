@@ -1,8 +1,7 @@
 import CustomImage from "./CustomImage"
-import {Link} from "react-router-dom"
 
-export default function RecipeCard({recipe, onDelete, showRecordDetails}) {
-
+export default function RecipeCard({recipe, onDelete, viewRecipe}) {
+    // kontynuuj rano z wyświetlaniem zdjęcia na profilu użytkownika
     return (
         <div className="recipe-card">
             <CustomImage imgSrc={recipe.imageSrc} pt="65%"/>
@@ -10,9 +9,8 @@ export default function RecipeCard({recipe, onDelete, showRecordDetails}) {
                 <img className="author-img" src={recipe.authorImg} alt=""/>
                 <p className="recipe-title">{recipe.name}</p>
                 <p className="recipe-description">{recipe.description}</p>
-                <button className="view-recipe-btn" onClick={() => {showRecordDetails(recipe)}}>VIEW</button>
-                <button className="delete-recipe-btn" onClick={() => {onDelete(recipe)}}>DELETE</button>
-                <button><Link to={"/recipe/"+recipe.id}>View Recipe</Link></button>
+                <button className="view-recipe-btn" onClick={() => {viewRecipe(recipe)}}>VIEW</button>
+                <button className="delete-recipe-btn" onClick={() => {onDelete(recipe)}}>DELETE</button>              
                 <div>
                 </div>
             </div>

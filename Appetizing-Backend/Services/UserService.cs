@@ -23,6 +23,9 @@ namespace Appetizing_Backend.Services
 
         public User GetUser(string id) => _users.Find<User>(user => user.Id == id).FirstOrDefault();
 
+        public User GetUserByEmail(string email) => _users.Find<User>(user => user.Email == email).FirstOrDefault();
+        public User GetUserByUsername(string username) => _users.Find<User>(user => user.Username == username).FirstOrDefault();
+
         public User Create(User user)
         {
             _users.InsertOne(user);
@@ -30,9 +33,9 @@ namespace Appetizing_Backend.Services
             return user;
         }
 
-        public string Authenticate(string email, string password)
+        public string Authenticate(string username, string password)
         {
-            var user = _users.Find(x => x.Email == email && x.Password == password).FirstOrDefault();
+            var user = _users.Find(x => x.Username == username && x.Password == password).FirstOrDefault();
 
             if (user == null)
             {
@@ -45,7 +48,7 @@ namespace Appetizing_Backend.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Email, email)
+                    new Claim(ClaimTypes.Name, username)
                 }),
 
                 Expires = DateTime.UtcNow.AddHours(1),

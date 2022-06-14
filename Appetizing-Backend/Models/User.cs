@@ -10,9 +10,21 @@ namespace Appetizing_Backend.Models
         public string? Id { get; set; }
 
         [BsonElement("Email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
+
+        [BsonElement("Username")]
+        public string Username { get; set; }
 
         [BsonElement("Password")]
         public string Password { get; set; }
+
+        public string? accessToken { get; set; }
+        public string? ImageName { set; get; }
+
+        [BsonIgnore]
+        public IFormFile? ImageFile { get; set; }
+
+        [BsonIgnore]
+        public string? ImageSrc { get; set; }
     }
 }

@@ -31,5 +31,8 @@ namespace Appetizing_Backend.Services
             _recipes.ReplaceOne(r => r.Id == recipe.Id, recipe);
             return recipe;
         }
+
+        public List<Recipe> SortByCuisine(string cuisine) => _recipes.Find(recipe => recipe.CuisineType == cuisine).ToList();
+        public List<Recipe> SortByMealType(string mealType) => _recipes.Find(recipe => recipe.MealType == mealType).ToList();
     }
 }

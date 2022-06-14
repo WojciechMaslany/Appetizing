@@ -1,5 +1,4 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Appetizing_Backend.Models
 {
@@ -18,11 +17,9 @@ namespace Appetizing_Backend.Models
 
         [BsonIgnore]
         public string? ImageSrc { get; set; }
-        /*public string Difficulty { get; set; }
-        public int Servings { get; set; }
-        public string CuisineType { get; set; }
-        public string Instructions { get; set; }
-        public string MealType { get; set; }
-        public string Author { get; set; }*/
+        public string? CuisineType { get; set; }
+        public string? MealType { get; set; }
+        public string? AuthorId { get; set; }
+        public string? Instructions { get; set; }
     }
 }

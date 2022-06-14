@@ -1,18 +1,15 @@
-import { useParams } from "react-router-dom";
 import { variables } from "../Variables"
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Recipe () {
-
-    const { id } = useParams();
+export default function NewRecipe () {
 
     const [values, setValues] = useState({
-        id: null,
         name: '',
         description: '',
         imageName: '',
-        imageSrc: null,
+        imageSrc: "/img/gallery/no_image.jpg",
         imageFile: null,
         cuisineType: '',
         mealType: '',
@@ -28,19 +25,9 @@ export default function Recipe () {
         })
     }
 
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        if(loading === true) {
-            refreshRecipe();
-        }     
-    },)
-
     const recipeAPI = (url = variables.API_URL + 'Recipe/') => {
         return {
-            fetch: (id) => axios.get(url + "GetRecipe/" + id),
-            delete: (id, imageName) => axios.delete(`${url}DeleteRecipe/${id}/${imageName}`),
-            update: (updatedRecord) => axios.put(url + "UpdateRecipe", updatedRecord)
+            create: newRecord => axios.post(url + "AddRecipe", newRecord)
         }
     }
 
@@ -87,9 +74,6 @@ export default function Recipe () {
         e.preventDefault()
         if(validate()) {
             const formData = new FormData();
-            if(values.id != null) {
-                formData.append('id', values.id)
-            }
             formData.append('name', values.name);
             formData.append('description', values.description);
             formData.append('imageName', values.imageName);
@@ -104,41 +88,14 @@ export default function Recipe () {
 
     const applyErrorClass = field => ((field in errors && errors[field] === false)?' invalid-field': '')
 
+    const navigate = useNavigate(); 
+
     const addOrEdit = (formData, onSuccess) => {
-        if(formData.get('id') === null) {
-            recipeAPI().create(formData)
-            .then(res => {
-                onSuccess();
-                refreshRecipe();
-            })
-            .catch(err => console.log(err))
-        }
-        else {
-            recipeAPI().update(formData)
+        recipeAPI().create(formData)
         .then(res => {
             onSuccess();
-            refreshRecipe();
+            navigate("/recipe/" + res.data.id)
         })
-        .catch(err => console.log(err))
-        }
-    }
-
-    function refreshRecipe() {
-        setLoading(true);
-        recipeAPI().fetch(id)
-        .then(res => {
-            setValues(res.data);
-            setLoading(false);
-        })
-        .catch(err => {
-            console.log(err);
-            setLoading(false);
-        })
-    }
-
-    const deleteRecipe = () => {
-        recipeAPI().delete(id, values.imageName)
-        .then(res => console.log("Gg"))
         .catch(err => console.log(err))
     }
 
@@ -166,13 +123,13 @@ export default function Recipe () {
                                 value={values.instructions}
                                 onChange = {handleInputChange} />
                         </div>
-                        <select name="cuisineType" onChange = {handleInputChange} value={values.cuisineType}>
+                        <select name="cuisineType" id="cuisineType" onChange = {handleInputChange} value={values.cuisineType}>
                             <option value={values.cuisineType = "Asian"}>Asian</option>
                             <option value={values.cuisineType = "Polish"}>Polish</option>
                             <option value={values.cuisineType = "Italian"}>Italian</option>
                             <option value={values.cuisineType = "French"}>French</option>
                         </select>
-                        <select name="mealType" onChange = {handleInputChange} value={values.mealType}>
+                        <select name="mealType" id="mealType" onChange = {handleInputChange} value={values.mealType}>
                             <option value={values.mealType = "breakfast"}>Breakfast</option>
                             <option value={values.mealType = "dinner"}>Dinner</option>
                             <option value={values.mealType = "supper"}>Supper</option>
@@ -180,9 +137,6 @@ export default function Recipe () {
                         </select>
                         <div>
                             <button type="submit">Submit</button>
-                        </div>
-                        <div>
-                            <button onClick={deleteRecipe}>Delete</button>
                         </div>
                     </div>
                 </div>

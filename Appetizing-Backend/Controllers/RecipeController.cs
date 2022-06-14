@@ -26,7 +26,11 @@ namespace Appetizing_Backend.Controllers
                 Name = x.Name,
                 Description = x.Description,
                 ImageName = x.ImageName,
-                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName)
+                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
+                CuisineType = x.CuisineType,
+                MealType = x.MealType,
+                AuthorId = x.AuthorId,
+                Instructions = x.Instructions
             }));
         }
 
@@ -40,7 +44,11 @@ namespace Appetizing_Backend.Controllers
                 Name = recipeRetrieved.Name,
                 Description = recipeRetrieved.Description,
                 ImageName = recipeRetrieved.ImageName,
-                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, recipeRetrieved.ImageName)
+                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, recipeRetrieved.ImageName),
+                CuisineType = recipeRetrieved.CuisineType,
+                MealType = recipeRetrieved.MealType,
+                AuthorId = recipeRetrieved.AuthorId,
+                Instructions = recipeRetrieved.Instructions
             };
             return Ok(recipeToSend);
         }
@@ -69,6 +77,40 @@ namespace Appetizing_Backend.Controllers
            var xd = _recipeService.GetRecipe(recipe.Id);
            DeleteImage(xd.ImageName);
            return Ok(_recipeService.UpdateRecipe(recipe));
+        }
+
+        [HttpGet]
+        public IActionResult SortByCuisine(string cuisine)
+        {
+            return Ok(_recipeService.SortByCuisine(cuisine).Select(x => new Recipe()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                ImageName = x.ImageName,
+                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
+                CuisineType = x.CuisineType,
+                MealType = x.MealType,
+                AuthorId = x.AuthorId,
+                Instructions = x.Instructions
+            }));
+        }
+
+        [HttpGet]
+        public IActionResult SortByMealType(string mealType)
+        {
+            return Ok(_recipeService.SortByMealType(mealType).Select(x => new Recipe()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                ImageName = x.ImageName,
+                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
+                CuisineType = x.CuisineType,
+                MealType = x.MealType,
+                AuthorId = x.AuthorId,
+                Instructions = x.Instructions
+            }));
         }
 
         [NonAction]
