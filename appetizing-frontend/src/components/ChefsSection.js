@@ -41,7 +41,7 @@ export default function ChefsSection() {
     ]
 
     return (
-        <div className="section chefs">
+        <div className="appsection chefs">
             <h1 className="title">Top Chefs:</h1>
             <div className="top-chefs-container">
             { chefs.map(chef => <ChefCard key={chef.name} chef={chef} />) }

@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { variables } from "../Variables"
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Comment from "../components/Comment";
 
 export default function Recipe () {
 
@@ -19,6 +20,7 @@ export default function Recipe () {
         authorId: '',
         instructions: ''
     });
+    const [commentsList, setCommentsList] = useState([]);
     const [errors, setErrors] = useState({});
     const handleInputChange = e => {
         const { name, value } = e.target;
@@ -33,6 +35,7 @@ export default function Recipe () {
     useEffect(() => {
         if(loading === true) {
             refreshRecipe();
+            populateComments();
         }     
     },)
 
@@ -41,6 +44,13 @@ export default function Recipe () {
             fetch: (id) => axios.get(url + "GetRecipe/" + id),
             delete: (id, imageName) => axios.delete(`${url}DeleteRecipe/${id}/${imageName}`),
             update: (updatedRecord) => axios.put(url + "UpdateRecipe", updatedRecord)
+        }
+    }
+
+    const commentsAPI = (url = variables.API_URL) => {
+        return {
+            getComments: (id) => axios.get(url + "Comment?id=" + id),
+            postComment: (comment) => axios.post(url + "Comment", comment)
         }
     }
 
@@ -136,6 +146,19 @@ export default function Recipe () {
         })
     }
 
+    function populateComments() {
+        setLoading(true);
+        commentsAPI().getComments(id)
+        .then(res => {
+            setCommentsList(res.data);
+            setLoading(false);
+        })
+        .catch(err => {
+            console.log(err);
+            setLoading(false);
+        })
+    }
+
     const deleteRecipe = () => {
         recipeAPI().delete(id, values.imageName)
         .then(res => console.log("Gg"))
@@ -143,10 +166,11 @@ export default function Recipe () {
     }
 
     return(
-        <form autoComplete="off" noValidate onSubmit={handleFormSubmit}>
+        <div className="any-item">
+            <form autoComplete="off" noValidate onSubmit={handleFormSubmit}>
                 <div>
                     <img src={values.imageSrc} className="img-preview" alt=""/>
-                    <div>
+                    <div className="form-group">
                         <div>
                             <input type="file" accept="image/*" className={"form-file" + applyErrorClass('imageSrc')}
                             onChange={showPreview} id="image-uploader" />
@@ -166,26 +190,37 @@ export default function Recipe () {
                                 value={values.instructions}
                                 onChange = {handleInputChange} />
                         </div>
-                        <select name="cuisineType" onChange = {handleInputChange} value={values.cuisineType}>
+                        <select className="form-select" name="cuisineType" onChange = {handleInputChange} value={values.cuisineType}>
                             <option value={"Asian"}>Asian</option>
                             <option value={"Polish"}>Polish</option>
                             <option value={"Italian"}>Italian</option>
                             <option value={"French"}>French</option>
                         </select>
-                        <select name="mealType" onChange = {handleInputChange} value={values.mealType}>
+                        <select className="form-select" name="mealType" onChange = {handleInputChange} value={values.mealType}>
                             <option value={"breakfast"}>Breakfast</option>
                             <option value={"dinner"}>Dinner</option>
                             <option value={"supper"}>Supper</option>
                             <option value={"dessert"}>Dessert</option>
                         </select>
                         <div>
-                            <button type="submit">Submit</button>
-                        </div>
-                        <div>
-                            <button onClick={deleteRecipe}>Delete</button>
+                            <button className="btn" type="submit">Submit</button>
+                            <button className="btn float-right" onClick={deleteRecipe}>Delete</button>
                         </div>
                     </div>
                 </div>
             </form>
+            <div className="container">
+                <div className="row">
+                    <div className="col-sm-5 col-md-6 col-12 pb-4">
+                        {commentsList.map((comment, key) => {
+                            return (
+                                <Comment key={key} comment={comment}/>
+                            )
+                        })}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     )
 }

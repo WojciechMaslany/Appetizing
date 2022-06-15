@@ -1,6 +1,6 @@
 .navbar{
     height: 55px;
-    width: 100%;
+    width: 100% !important;
     top: 0;
     box-shadow: 0 3px 6px var(--shadow-color);
     background-color: var(--background-color);
@@ -10,7 +10,10 @@
     justify-content: space-between;
     align-items: center;
     z-index: 998;
-    .logo{
+    box-sizing: border-box;
+    .logo{    
+        position: relative;
+        left: 15vw;
         font-size: 1.5em;
         font-weight: bolder;
         color: var(--primary-color);
@@ -23,6 +26,7 @@
 
 .nav-links{
     a{
+        right: 15vw;
         margin-left: 1em;
         color: var(--text-light);
         letter-spacing: 2px;

@@ -72,7 +72,7 @@ export default function RecipesList() {
     }
 
     return (
-        <div>
+        <div className="any-item">
             {/* <Searches/> */}
             <div className="previous-searches">
                 <div className="search-box">

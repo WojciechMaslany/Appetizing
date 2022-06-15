@@ -12,26 +12,26 @@ class Profile extends Component {
     }
     
     return (
-      <div className="profile-container">
-      <CustomImage imgSrc={currentUser.imageSrc} pt="65%"/>
-        <div className="profile-info">
-          <header className="jumbotron">
-            <h3>
-              Profile of <strong>{currentUser.username}</strong> 
-            </h3>
-          </header>
-          <p>
-            <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)} ...{" "}
-            {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-          </p>
-          <p>
-            <strong>Id:</strong> {currentUser.id}
-          </p>
-          <p>
-            <strong>Email:</strong> {currentUser.email}
-          </p>
+        <div className="profile-container">
+            <img className="img-thumbnail" src={currentUser.imageSrc} alt=""/>
+            <div className="profile-info">
+              <header className="jumbotron">
+                <h3>
+                  Profile of <strong>{currentUser.username}</strong> 
+                </h3>
+              </header>
+              <p>
+                <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)} ...{" "}
+                {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
+              </p>
+              <p>
+                <strong>Id:</strong> {currentUser.id}
+              </p>
+              <p>
+                <strong>Email:</strong> {currentUser.email}
+              </p>
+            </div>
         </div>
-      </div>
     );
   }
 }

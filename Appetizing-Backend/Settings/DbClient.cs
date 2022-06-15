@@ -9,6 +9,7 @@ namespace Appetizing_Backend.Settings
     {
         private readonly IMongoCollection<Recipe> _recipes;
         private readonly IMongoCollection<User> _users;
+        private readonly IMongoCollection<Comment> _comments;
         public DbClient(IOptions<MongoDbConfig> mongoDbConfig)
         {
             MongoClient client = new MongoClient(mongoDbConfig.Value.ConnectionString);
@@ -16,9 +17,11 @@ namespace Appetizing_Backend.Settings
 
             _recipes = database.GetCollection<Recipe>("Recipes");
             _users = database.GetCollection<User>("Users");
+            _comments = database.GetCollection<Comment>("Comment");
         }
 
         public IMongoCollection<Recipe> GetRecipesCollection() => _recipes;
         public IMongoCollection<User> GetUsersCollection() => _users;
+        public IMongoCollection<Comment> GetCommentsCollection() => _comments;
     }
 }

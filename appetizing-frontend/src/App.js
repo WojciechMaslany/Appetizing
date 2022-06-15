@@ -4,9 +4,9 @@ import {
   Routes 
 } from "react-router-dom";
 
+import 'bootstrap/dist/css/bootstrap.css';
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
 import Home from "./pages/Home";
 import RecipesList from "./pages/RecipesList";
 import Settings from "./pages/Settings";
@@ -76,7 +76,7 @@ class App extends Component {
     return (
       <Router history={history}>
         <div>
-          <nav className="navbar container">
+          <nav className="navbar">
             <Link to={"/"} className="logo">
               A<span>pp</span>etizing
             </Link>

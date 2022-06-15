@@ -38,7 +38,7 @@ export default function RecipeCard({recipe, onDelete, viewRecipe}) {
                 <img className="author-img" src={authorImage} alt=""/>
                 <p className="recipe-title">{recipe.name}</p>
                 <p className="recipe-description">{recipe.description}</p>
-                <button className="view-recipe-btn" onClick={() => {viewRecipe(recipe)}}>VIEW</button>
+                <button className="view-recipe-btn" onClick={() => {viewRecipe(recipe)}}>EDIT</button>
                 <button className="delete-recipe-btn" onClick={() => {onDelete(recipe)}}>DELETE</button>              
                 <div>
                 </div>
