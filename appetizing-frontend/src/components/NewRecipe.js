@@ -123,17 +123,17 @@ export default function NewRecipe () {
                                 value={values.instructions}
                                 onChange = {handleInputChange} />
                         </div>
-                        <select name="cuisineType" id="cuisineType" onChange = {handleInputChange} value={values.cuisineType}>
-                            <option value={values.cuisineType = "Asian"}>Asian</option>
-                            <option value={values.cuisineType = "Polish"}>Polish</option>
-                            <option value={values.cuisineType = "Italian"}>Italian</option>
-                            <option value={values.cuisineType = "French"}>French</option>
+                        <select name="cuisineType" onChange = {handleInputChange} value={values.cuisineType}>
+                            <option value={"Asian"}>Asian</option>
+                            <option value={"Polish"}>Polish</option>
+                            <option value={"Italian"}>Italian</option>
+                            <option value={"French"}>French</option>
                         </select>
-                        <select name="mealType" id="mealType" onChange = {handleInputChange} value={values.mealType}>
-                            <option value={values.mealType = "breakfast"}>Breakfast</option>
-                            <option value={values.mealType = "dinner"}>Dinner</option>
-                            <option value={values.mealType = "supper"}>Supper</option>
-                            <option value={values.mealType = "dessert"}>Dessert</option>
+                        <select name="mealType" onChange = {handleInputChange} value={values.mealType}>
+                            <option value={"breakfast"}>Breakfast</option>
+                            <option value={"dinner"}>Dinner</option>
+                            <option value={"supper"}>Supper</option>
+                            <option value={"dessert"}>Dessert</option>
                         </select>
                         <div>
                             <button type="submit">Submit</button>

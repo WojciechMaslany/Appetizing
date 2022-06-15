@@ -83,14 +83,19 @@ export default function RecipesList() {
                         }}
                     />
                     <button className="btn">
-                        <FontAwesomeIcon icon={faSearch}/>
+                        <FontAwesomeIcon style={{cursor: 'pointer'}} icon={faSearch}/>
                     </button>
                 </div>
             </div>
             
-            <button><Link to={"/recipe"}>Add Recipe</Link></button>
-            <button onClick={sortByCuisine}>Get All French</button>
-            <button onClick={sortByMealType}>Get All Desserts</button>
+            <div className="recipes-list-actions">
+                <h2>Filters</h2>
+                <div className="action-items-container">
+                    <div className="action-item"><Link style={{ textDecoration: 'none', color: '#fff'}} to={"/recipe"}>Add Recipe</Link></div>
+                    <div className="action-item" onClick={sortByCuisine}>Get All French</div>
+                    <div className="action-item" onClick={sortByMealType}>Get All Desserts</div>
+                </div> 
+            </div>
             <div className="recipe-card-container">
                 {recipeList.filter((recipe) => {
                     if (searchTerm === "") {

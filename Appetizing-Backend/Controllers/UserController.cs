@@ -24,6 +24,7 @@ namespace Appetizing_Backend.Controllers
             return _userService.GetUsers();
         }
 
+        [AllowAnonymous]
         [HttpGet("{id:length(24)}")]
         public ActionResult<User> GetUser (string id)
         {
@@ -34,7 +35,7 @@ namespace Appetizing_Backend.Controllers
                 Email = user.Email,
                 Username = user.Username,
                 Password = user.Password,
-                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImageName)
+                ImageSrc = String.Format("{0}://{1}{2}/Images/Users/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImageName)
             };
             return Json(userToSend);
         }
@@ -66,7 +67,7 @@ namespace Appetizing_Backend.Controllers
                 Username = user.Username,
                 Password = user.Password,
                 accessToken = token,
-                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImageName)
+                ImageSrc = String.Format("{0}://{1}{2}/Images/Users/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImageName)
             };
             return Ok(userToSend);
         }
@@ -76,7 +77,7 @@ namespace Appetizing_Backend.Controllers
         {
             string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(" ", "-");
             imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images/Users", imageName);
 
             using (var fileStream = new FileStream(imagePath, FileMode.Create))
             {
@@ -88,7 +89,7 @@ namespace Appetizing_Backend.Controllers
         [NonAction]
         public void DeleteImage(string imageName)
         {
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images/Users", imageName);
             if (System.IO.File.Exists(imagePath))
                 System.IO.File.Delete(imagePath);
         }

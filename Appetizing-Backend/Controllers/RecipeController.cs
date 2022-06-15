@@ -26,7 +26,7 @@ namespace Appetizing_Backend.Controllers
                 Name = x.Name,
                 Description = x.Description,
                 ImageName = x.ImageName,
-                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
+                ImageSrc = String.Format("{0}://{1}{2}/Images/Recipes/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
                 CuisineType = x.CuisineType,
                 MealType = x.MealType,
                 AuthorId = x.AuthorId,
@@ -44,7 +44,7 @@ namespace Appetizing_Backend.Controllers
                 Name = recipeRetrieved.Name,
                 Description = recipeRetrieved.Description,
                 ImageName = recipeRetrieved.ImageName,
-                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, recipeRetrieved.ImageName),
+                ImageSrc = String.Format("{0}://{1}{2}/Images/Recipes/{3}", Request.Scheme, Request.Host, Request.PathBase, recipeRetrieved.ImageName),
                 CuisineType = recipeRetrieved.CuisineType,
                 MealType = recipeRetrieved.MealType,
                 AuthorId = recipeRetrieved.AuthorId,
@@ -88,7 +88,7 @@ namespace Appetizing_Backend.Controllers
                 Name = x.Name,
                 Description = x.Description,
                 ImageName = x.ImageName,
-                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
+                ImageSrc = String.Format("{0}://{1}{2}/Images/Recipes/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
                 CuisineType = x.CuisineType,
                 MealType = x.MealType,
                 AuthorId = x.AuthorId,
@@ -105,7 +105,7 @@ namespace Appetizing_Backend.Controllers
                 Name = x.Name,
                 Description = x.Description,
                 ImageName = x.ImageName,
-                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
+                ImageSrc = String.Format("{0}://{1}{2}/Images/Recipes/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
                 CuisineType = x.CuisineType,
                 MealType = x.MealType,
                 AuthorId = x.AuthorId,
@@ -118,7 +118,7 @@ namespace Appetizing_Backend.Controllers
         {
             string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(" ", "-");
             imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images/Recipes", imageName);
 
             using (var fileStream = new FileStream(imagePath, FileMode.Create))
             {
@@ -130,7 +130,7 @@ namespace Appetizing_Backend.Controllers
         [NonAction]
         public void DeleteImage(string imageName)
         {
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images/Recipes", imageName);
             if (System.IO.File.Exists(imagePath))
                 System.IO.File.Delete(imagePath);
         }

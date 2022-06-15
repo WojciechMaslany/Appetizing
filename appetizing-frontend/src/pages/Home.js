@@ -13,8 +13,7 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    this.setState({content: "Dick"})
-    console.log("Blabla2")
+    this.setState({content: ""})
   }
 
   render() {

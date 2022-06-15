@@ -21,8 +21,8 @@ class AuthService {
 
   register(
     username,
-    password,
     email,
+    password,
     imageName,
     imageFile) {
       const formData = new FormData();

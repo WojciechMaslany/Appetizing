@@ -179,6 +179,48 @@ img {
     }
 }
 
+.profile-container {
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px var(--shadow-color);
+    .custom-image {
+        display: inline-block;
+        z-index: -1;
+        width: 100%;
+        padding: 10%;
+        border-radius: 5px;
+        border: 3px solid var(--background-light);
+    }
+    .profile-info {
+        display: inline-block;
+        padding: 15px;
+    }
+}
+
+.recipes-list-actions{
+    display: block;
+    h2{
+        color: var(--text-color);
+        margin-bottom: .5em;
+    }
+    .action-items-container{
+        .action-item{
+            background-color: var(--primary-color);
+            display: inline-block;
+            padding: .5em 1em;
+            margin: 0 .75em .75em 0;
+            color: #fff;
+            border-radius: 30px;
+            box-shadow: 0 3px 6px var(--shadow-color);
+            transform: translateX(100%);
+            opacity: 0;
+            animation: getAnimationDuration(.5s) slideInRight forwards;
+            cursor: pointer;
+        }
+    }
+}
+
 .main {
     padding-block: 3vw;
 }
