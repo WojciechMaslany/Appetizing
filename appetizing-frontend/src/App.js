@@ -15,6 +15,7 @@ import  Login  from "./components/Login"
 import Profile from "./components/Profile"
 import Register from "./components/Register"
 import NewRecipe from "./components/NewRecipe"
+import ViewRecipe from "./components/ViewRecipe";
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
 import { history } from './helpers/history';
@@ -78,7 +79,7 @@ class App extends Component {
         <div>
           <nav className="navbar">
             <Link to={"/"} className="logo">
-              A<span>pp</span>etizing
+              <span>App</span>etizing
             </Link>
 
             {currentUser ? (
@@ -115,6 +116,7 @@ class App extends Component {
               <Route path="/recipes" element= {<RecipesList/>} />
               <Route path="/settings" element= {<Settings/>} />
               <Route path="/recipe/:id" element={<Recipe/>}/>
+              <Route path="/viewRecipe/:id" element={<ViewRecipe/>}/>
               <Route path="/recipe" element={<NewRecipe/>}/>
               <Route path="/profile" element= {<Profile/>}/>
               <Route path="/register" element= {<Register/>}/>

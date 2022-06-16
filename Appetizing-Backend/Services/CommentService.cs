@@ -16,6 +16,7 @@ namespace Appetizing_Backend.Services
 
         public Comment PostComment(Comment comment)
         {
+            comment.Date = DateTime.Now.ToString("MM/dd/yyyy h:mm tt");
             _comments.InsertOne(comment);
             return comment;
         }

@@ -131,7 +131,7 @@ class Register extends Component {
     return (
       <div className="col-md-12">
         <div className="card card-container">
-          <img src={this.state.imageSrc} className="img-preview" alt=""/>
+          <img src={this.state.imageSrc} style={{width: '400px', margin: 'auto'}} alt=""/>
           <Form
             onSubmit={this.handleRegister}
             ref={(c) => {
@@ -177,7 +177,7 @@ class Register extends Component {
                     validations={[required, vpassword]}
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group" style={{marginTop: '10px'}}>
                   <button className="btn btn-primary btn-block">Sign Up</button>
                 </div>
               </div>

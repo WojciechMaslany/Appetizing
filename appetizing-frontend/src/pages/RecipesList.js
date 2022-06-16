@@ -12,6 +12,7 @@ export default function RecipesList() {
     const [recipeList, setRecipeList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
     useEffect(() => {
         if(loading === true) {
@@ -32,6 +33,10 @@ export default function RecipesList() {
 
     function refreshRecipeList() {
         setLoading(true);
+        if(localStorage.getItem('user') != null) {
+            setIsUserLoggedIn(true);
+            console.log(isUserLoggedIn);
+        }
         recipeAPI().fetchAll()
         .then(res => {
             setRecipeList(res.data);
@@ -67,9 +72,15 @@ export default function RecipesList() {
 
     const navigate = useNavigate();
 
-    const viewRecipe = (recipe) => {
+    const editRecipe = (recipe) => {
         navigate("/recipe/" + recipe.id)
     }
+
+    const viewRecipe = (recipe) => {
+        navigate("/viewRecipe/" + recipe.id)
+    }
+
+
 
     return (
         <div className="any-item">
@@ -105,7 +116,7 @@ export default function RecipesList() {
                     }
                 }).map((recipe, key) => {
                     return (
-                        <RecipeCard key={key} recipe={recipe} onDelete={onDelete} viewRecipe={viewRecipe}/>
+                        <RecipeCard key={key} recipe={recipe} onDelete={onDelete} editRecipe={editRecipe} viewRecipe={viewRecipe}/>
                     )
                 })}
             </div> 

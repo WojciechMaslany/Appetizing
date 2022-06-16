@@ -11,6 +11,6 @@ namespace Appetizing_Backend.Models
         public string RecipeId { get; set; }
         public string AuthorId { get; set; }
         public string CommentBody { get; set; }
-        public DateTime? Date { get; set; }
+        public string? Date { get; set; }
     }
 }
