@@ -21,5 +21,6 @@ namespace Appetizing_Backend.Models
         public string? MealType { get; set; }
         public string? AuthorId { get; set; }
         public string? Instructions { get; set; }
+        public string[]? Ingredients { get; set; }
     }
 }

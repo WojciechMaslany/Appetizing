@@ -3,6 +3,7 @@ import { variables } from "../Variables"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Comment from "../components/Comment";
+import { useNavigate } from "react-router-dom";
 
 export default function Recipe () {
 
@@ -18,16 +19,37 @@ export default function Recipe () {
         cuisineType: '',
         mealType: '',
         authorId: '',
-        instructions: ''
+        instructions: '',
+        ingredients: []
     });
     const [commentsList, setCommentsList] = useState([]);
     const [errors, setErrors] = useState({});
+    const [ingredient, setIngriedient] = useState('');
+    const [ingredientsArray, setIngredientsArray] = useState([])
     const handleInputChange = e => {
         const { name, value } = e.target;
         setValues({
             ...values,
             [name]:value
         })
+    }
+
+    const handleIngriedientChange = e => {
+        const { name, value } = e.target;
+        setIngriedient(value);
+    }
+
+    function addIngredient () {
+        if(ingredientsArray != null) {
+            let someArray = ingredientsArray;
+            someArray.push(ingredient);
+            setIngredientsArray(someArray);
+        } else {
+            setIngredientsArray([ingredient])
+        }
+        
+        setIngriedient('');
+        console.log(ingredientsArray)
     }
 
     const [loading, setLoading] = useState(true);
@@ -108,18 +130,21 @@ export default function Recipe () {
             formData.append('mealType', values.mealType);
             formData.append('authorId', user.id);
             formData.append('instructions', values.instructions);
+            for (let i = 0; i < ingredientsArray.length; i++) {
+                formData.append('ingredients', ingredientsArray[i])
+            }
             addOrEdit(formData, resetForm);
         }
     }
 
     const applyErrorClass = field => ((field in errors && errors[field] === false)?' invalid-field': '')
-
+    const navigate = useNavigate();
     const addOrEdit = (formData, onSuccess) => {
         if(formData.get('id') === null) {
             recipeAPI().create(formData)
             .then(res => {
                 onSuccess();
-                refreshRecipe();
+                navigate("/viewRecipe/" + values.id);
             })
             .catch(err => console.log(err))
         }
@@ -127,7 +152,7 @@ export default function Recipe () {
             recipeAPI().update(formData)
         .then(res => {
             onSuccess();
-            refreshRecipe();
+            navigate("/viewRecipe/" + values.id);
         })
         .catch(err => console.log(err))
         }
@@ -138,6 +163,7 @@ export default function Recipe () {
         recipeAPI().fetch(id)
         .then(res => {
             setValues(res.data);
+            setIngredientsArray(res.data.ingredients)
             setLoading(false);
         })
         .catch(err => {
@@ -165,6 +191,10 @@ export default function Recipe () {
         .catch(err => console.log(err))
     }
 
+    function ingredientsMapper() {
+        return ingredientsArray.map((ingredient) => <li>{ingredient}</li>);
+      }
+
     return(
         <div className="any-item">
             <form autoComplete="off" noValidate onSubmit={handleFormSubmit}>
@@ -189,6 +219,15 @@ export default function Recipe () {
                             <textarea placeholder="Recipe Instructions" name="instructions" className={"form-control" + applyErrorClass('recipeInstructions')}
                                 value={values.instructions}
                                 onChange = {handleInputChange} />
+                        </div>
+                        {values.ingredients.map((item) => {
+                                <li>{item}</li>
+                            })}
+                        <div>
+                            <input placeholder="Add ingredient..." name="ingredient" className={"form-control" + applyErrorClass('recipeIngredient')}
+                                value={ingredient}
+                                onChange = {handleIngriedientChange} />
+                            <div onClick={addIngredient}>Add</div>
                         </div>
                         <select className="form-select" name="cuisineType" onChange = {handleInputChange} value={values.cuisineType}>
                             <option value={"Asian"}>Asian</option>

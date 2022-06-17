@@ -19,7 +19,8 @@ export default function ViewRecipe() {
         cuisineType: '',
         mealType: '',
         authorId: '',
-        instructions: ''
+        instructions: '',
+        ingredients: []
     });
     const [commentsList, setCommentsList] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -112,6 +113,10 @@ export default function ViewRecipe() {
                             <p className="card-text">Meal: {values.mealType}</p>
                             <p className="card-text">Description: {values.description}</p>
                             <p className="card-text">Instructions: {values.instructions}</p>
+                            <p className="card-text">Ingredients: {values.ingredients.map((ingredient) =>
+                                <li>{ingredient}</li>
+                            )    
+                            }</p>
                         </div>
                     </div>
                 </div>

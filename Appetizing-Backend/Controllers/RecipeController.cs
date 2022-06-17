@@ -30,7 +30,8 @@ namespace Appetizing_Backend.Controllers
                 CuisineType = x.CuisineType,
                 MealType = x.MealType,
                 AuthorId = x.AuthorId,
-                Instructions = x.Instructions
+                Instructions = x.Instructions,
+                Ingredients = x.Ingredients
             }));
         }
 
@@ -48,7 +49,8 @@ namespace Appetizing_Backend.Controllers
                 CuisineType = recipeRetrieved.CuisineType,
                 MealType = recipeRetrieved.MealType,
                 AuthorId = recipeRetrieved.AuthorId,
-                Instructions = recipeRetrieved.Instructions
+                Instructions = recipeRetrieved.Instructions,
+                Ingredients = recipeRetrieved.Ingredients
             };
             return Ok(recipeToSend);
         }
@@ -72,10 +74,12 @@ namespace Appetizing_Backend.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateRecipe([FromForm] Recipe recipe)
         {
-           
-           recipe.ImageName = await SaveImage(recipe.ImageFile);
-           var xd = _recipeService.GetRecipe(recipe.Id);
-           DeleteImage(xd.ImageName);
+           if (recipe.ImageFile != null)
+            {
+                recipe.ImageName = await SaveImage(recipe.ImageFile);
+                var oldRecipe = _recipeService.GetRecipe(recipe.Id);
+                DeleteImage(oldRecipe.ImageName);
+            }
            return Ok(_recipeService.UpdateRecipe(recipe));
         }
 
@@ -92,7 +96,8 @@ namespace Appetizing_Backend.Controllers
                 CuisineType = x.CuisineType,
                 MealType = x.MealType,
                 AuthorId = x.AuthorId,
-                Instructions = x.Instructions
+                Instructions = x.Instructions,
+                Ingredients = x.Ingredients
             }));
         }
 
@@ -109,7 +114,8 @@ namespace Appetizing_Backend.Controllers
                 CuisineType = x.CuisineType,
                 MealType = x.MealType,
                 AuthorId = x.AuthorId,
-                Instructions = x.Instructions
+                Instructions = x.Instructions,
+                Ingredients = x.Ingredients
             }));
         }
 

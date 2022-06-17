@@ -1,4 +1,3 @@
-import Searches from "../components/Searches"
 import RecipeCard from "../components/RecipeCard"
 import { variables } from "../Variables"
 import axios from "axios";
@@ -84,7 +83,11 @@ export default function RecipesList() {
 
     return (
         <div className="any-item">
-            {/* <Searches/> */}
+        <div className="recipes-list-actions" style={{margin: 'auto'}}>
+                <div className="action-items-container">  
+                    <div className="action-item"><Link style={{ textDecoration: 'none', color: '#fff'}} to={"/recipe"}>Add Recipe</Link></div> 
+                </div> 
+            </div> 
             <div className="previous-searches">
                 <div className="search-box">
                     <input type="text" 
@@ -102,7 +105,6 @@ export default function RecipesList() {
             <div className="recipes-list-actions">
                 <h2>Filters</h2>
                 <div className="action-items-container">
-                    <div className="action-item"><Link style={{ textDecoration: 'none', color: '#fff'}} to={"/recipe"}>Add Recipe</Link></div>
                     <div className="action-item" onClick={sortByCuisine}>Get All French</div>
                     <div className="action-item" onClick={sortByMealType}>Get All Desserts</div>
                 </div> 
