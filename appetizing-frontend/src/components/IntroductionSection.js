@@ -1,4 +1,5 @@
 import CustomImage from "./CustomImage"
+import { useNavigate } from "react-router-dom";
 
 export default function IntroductionSection() {
 
@@ -14,12 +15,18 @@ export default function IntroductionSection() {
         "/img/gallery/yellow_curry_minced_pork.jpg"
     ]
 
+    const navigate = useNavigate();
+
+    const goToRecipes = () => {
+        navigate("/recipes")
+    }
+
     return (
         <div className="section intro">
             <div className="col typography">
                 <h1 className="title">What are we about</h1>
                 <p className="info">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
-                <button className="btn">Explore now</button>
+                <button className="btn" onClick={() => {goToRecipes()}}>Explore now</button>
             </div>
             <div className="col gallery">
                 { images.map((src, index) => (

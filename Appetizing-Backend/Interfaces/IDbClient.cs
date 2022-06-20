@@ -8,5 +8,6 @@ namespace Appetizing_Backend.Interfaces
         IMongoCollection<Recipe> GetRecipesCollection();
         IMongoCollection<User> GetUsersCollection();
         IMongoCollection<Comment> GetCommentsCollection();
+        IMongoCollection<Favorites> GetFavoritesCollection();
     }
 }

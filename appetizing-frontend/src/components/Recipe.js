@@ -20,7 +20,7 @@ export default function Recipe () {
         mealType: '',
         authorId: '',
         instructions: '',
-        ingredients: []
+        ingredients: [],
     });
     const [commentsList, setCommentsList] = useState([]);
     const [errors, setErrors] = useState({});
@@ -191,10 +191,6 @@ export default function Recipe () {
         .catch(err => console.log(err))
     }
 
-    function ingredientsMapper() {
-        return ingredientsArray.map((ingredient) => <li>{ingredient}</li>);
-      }
-
     return(
         <div className="any-item">
             <form autoComplete="off" noValidate onSubmit={handleFormSubmit}>
@@ -220,9 +216,9 @@ export default function Recipe () {
                                 value={values.instructions}
                                 onChange = {handleInputChange} />
                         </div>
-                        {values.ingredients.map((item) => {
-                                <li>{item}</li>
-                            })}
+                        <div className="form-control">
+                            {ingredientsArray}
+                        </div>
                         <div>
                             <input placeholder="Add ingredient..." name="ingredient" className={"form-control" + applyErrorClass('recipeIngredient')}
                                 value={ingredient}

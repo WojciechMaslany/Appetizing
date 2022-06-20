@@ -31,7 +31,8 @@ namespace Appetizing_Backend.Controllers
                 MealType = x.MealType,
                 AuthorId = x.AuthorId,
                 Instructions = x.Instructions,
-                Ingredients = x.Ingredients
+                Ingredients = x.Ingredients,
+                Likes = x.Likes
             }));
         }
 
@@ -50,7 +51,8 @@ namespace Appetizing_Backend.Controllers
                 MealType = recipeRetrieved.MealType,
                 AuthorId = recipeRetrieved.AuthorId,
                 Instructions = recipeRetrieved.Instructions,
-                Ingredients = recipeRetrieved.Ingredients
+                Ingredients = recipeRetrieved.Ingredients,
+                Likes = recipeRetrieved.Likes
             };
             return Ok(recipeToSend);
         }
@@ -97,7 +99,8 @@ namespace Appetizing_Backend.Controllers
                 MealType = x.MealType,
                 AuthorId = x.AuthorId,
                 Instructions = x.Instructions,
-                Ingredients = x.Ingredients
+                Ingredients = x.Ingredients,
+                Likes = x.Likes
             }));
         }
 
@@ -115,8 +118,16 @@ namespace Appetizing_Backend.Controllers
                 MealType = x.MealType,
                 AuthorId = x.AuthorId,
                 Instructions = x.Instructions,
-                Ingredients = x.Ingredients
+                Ingredients = x.Ingredients,
+                Likes = x.Likes
             }));
+        }
+
+        [HttpPut]
+        public ActionResult AddFavorite(Recipe recipe)
+        {
+            var response = _recipeService.AddFavorite(recipe);
+            return Json(response);
         }
 
         [NonAction]

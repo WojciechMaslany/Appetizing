@@ -34,5 +34,36 @@ namespace Appetizing_Backend.Services
 
         public List<Recipe> SortByCuisine(string cuisine) => _recipes.Find(recipe => recipe.CuisineType == cuisine).ToList();
         public List<Recipe> SortByMealType(string mealType) => _recipes.Find(recipe => recipe.MealType == mealType).ToList();
+
+        public string AddFavorite(Recipe recipe)
+        {
+            if (recipe.Likes.IsLiked == true && recipe.Likes.UserId != null)
+            {
+                if (recipe.Likes.AuthorId.Contains(recipe.Likes.UserId))
+                {  
+                    return "Already liked";
+                } 
+                else
+                {
+                    recipe.Likes.AuthorId = recipe.Likes.AuthorId.Append(recipe.Likes.UserId).ToArray();
+                    _recipes.ReplaceOne(r => r.Id == recipe.Id, recipe);
+                    return "Recipe Liked";
+                }
+            } 
+            else if (recipe.Likes.IsLiked == false && recipe.Likes.UserId != null)
+            {
+                if (recipe.Likes.AuthorId.Contains(recipe.Likes.UserId))
+                {
+                    string idToRemove = recipe.Likes.UserId;
+                    recipe.Likes.AuthorId = recipe.Likes.AuthorId.Where(val => val != idToRemove).ToArray();
+                    _recipes.ReplaceOne(r => r.Id == recipe.Id, recipe);
+                    return "Recipe unliked";
+                } else
+                {
+                    return "Recipe was not liked anyway";
+                }
+            }
+            return "";
+        }
     }
 }

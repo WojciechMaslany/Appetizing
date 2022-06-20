@@ -20,7 +20,12 @@ export default function ViewRecipe() {
         mealType: '',
         authorId: '',
         instructions: '',
-        ingredients: []
+        ingredients: [],
+        likes: {
+            isLiked: false,
+            authorId: [],
+            userId: ''
+        }
     });
     const [commentsList, setCommentsList] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -117,6 +122,9 @@ export default function ViewRecipe() {
                                 <li>{ingredient}</li>
                             )    
                             }</p>
+                            <p>{values.likes.isLiked}</p>
+                            <p>{values.likes.userId}</p>
+                            <p>{values.likes.authorId[0]}</p>
                         </div>
                     </div>
                 </div>

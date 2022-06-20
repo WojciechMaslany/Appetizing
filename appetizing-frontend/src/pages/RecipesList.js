@@ -22,11 +22,12 @@ export default function RecipesList() {
     const recipeAPI = (url = variables.API_URL + 'Recipe/') => {
         return {
             fetchAll: () => axios.get(url + "GetRecipes"),
-            getAllByCuisine: () => axios.get(url + "SortByCuisine?cuisine=French"),
-            getAllByMealType: () => axios.get(url + "SortByMealType?mealType=dessert"),
+            getAllByCuisine: (ciusine) => axios.get(`${url}SortByCuisine?cuisine=${ciusine}`),
+            getAllByMealType: (mealType) => axios.get(`${url}SortByMealType?mealType=${mealType}`),
             create: newRecord => axios.post(url + "AddRecipe", newRecord),
             update: (updatedRecord) => axios.put(url + "UpdateRecipe", updatedRecord),
-            delete: (id, imageName) => axios.delete(`${url}DeleteRecipe/${id}/${imageName}`)
+            delete: (id, imageName) => axios.delete(`${url}DeleteRecipe/${id}/${imageName}`),
+            addToFav: (updatedRecord) => axios.put(url + "AddFavorite", updatedRecord)
         }
     }
 
@@ -34,7 +35,6 @@ export default function RecipesList() {
         setLoading(true);
         if(localStorage.getItem('user') != null) {
             setIsUserLoggedIn(true);
-            console.log(isUserLoggedIn);
         }
         recipeAPI().fetchAll()
         .then(res => {
@@ -53,16 +53,16 @@ export default function RecipesList() {
         .catch(err => console.log(err))
     }
 
-    const sortByCuisine = () => {
-        recipeAPI().getAllByCuisine()
+    const sortByCuisine = (cuisine) => {
+        recipeAPI().getAllByCuisine(cuisine)
         .then(res => {
             setRecipeList(res.data);
         })
         .catch(err => console.log(err))
     }
 
-    const sortByMealType = () => {
-        recipeAPI().getAllByMealType()
+    const sortByMealType = (mealType) => {
+        recipeAPI().getAllByMealType(mealType)
         .then(res => {
             setRecipeList(res.data);
         })
@@ -79,7 +79,13 @@ export default function RecipesList() {
         navigate("/viewRecipe/" + recipe.id)
     }
 
-
+    const addToFavorites = (recipe) => {
+        const user = JSON.parse(localStorage.getItem('user'))
+        recipeAPI().addToFav(recipe)
+        .then(res => {
+            console.log(res.data);
+        })
+    }
 
     return (
         <div className="any-item">
@@ -105,20 +111,41 @@ export default function RecipesList() {
             <div className="recipes-list-actions">
                 <h2>Filters</h2>
                 <div className="action-items-container">
-                    <div className="action-item" onClick={sortByCuisine}>Get All French</div>
-                    <div className="action-item" onClick={sortByMealType}>Get All Desserts</div>
+                    <div className="action-item" onClick={() => {sortByCuisine("French")}}>French</div>
+                    <div className="action-item" onClick={() => {sortByCuisine("Italian")}}>Italian</div>
+                    <div className="action-item" onClick={() => {sortByCuisine("Polish")}}>Polish</div>
+                    <div className="action-item" onClick={() => {sortByCuisine("Asian")}}>Asian</div>
+                    <div className="action-item" onClick={() => {sortByMealType("Breakfast")}}>Breakfast</div>
+                    <div className="action-item" onClick={() => {sortByMealType("Dinner")}}>Dinner</div>
+                    <div className="action-item" onClick={() => {sortByMealType("Supper")}}>Supper</div>
+                    <div className="action-item" onClick={() => {sortByMealType("Dessert")}}>Dessert</div>
+                    <div className="action-item" onClick={() => {refreshRecipeList()}}>Reset</div>
                 </div> 
             </div>
             <div className="recipe-card-container">
                 {recipeList.filter((recipe) => {
+                    let ingredientsOfRecipe = recipe.ingredients.map(v => v.toLowerCase());
                     if (searchTerm === "") {
                         return recipe
                     } else if (recipe.name.toLowerCase().includes(searchTerm.toLowerCase())) {
                         return recipe
+                    } else if (ingredientsOfRecipe) {
+                        for (let i = 0; i<ingredientsOfRecipe.length; i++) {
+                            if(ingredientsOfRecipe[i].includes(searchTerm.toLowerCase())) {
+                                return recipe;
+                            }
+                        }
                     }
                 }).map((recipe, key) => {
                     return (
-                        <RecipeCard key={key} recipe={recipe} onDelete={onDelete} editRecipe={editRecipe} viewRecipe={viewRecipe}/>
+                        <RecipeCard 
+                        key={key} 
+                        recipe={recipe} 
+                        onDelete={onDelete} 
+                        editRecipe={editRecipe} 
+                        viewRecipe={viewRecipe}
+                        addToFavorites={addToFavorites}
+                        />
                     )
                 })}
             </div> 

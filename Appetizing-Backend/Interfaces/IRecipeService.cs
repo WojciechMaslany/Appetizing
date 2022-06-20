@@ -11,5 +11,7 @@ namespace Appetizing_Backend.Interfaces
         Recipe UpdateRecipe(Recipe recipe);
         List<Recipe> SortByCuisine(string cuisine);
         List<Recipe> SortByMealType(string mealType);
+
+        string AddFavorite(Recipe recipe);
     }
 }

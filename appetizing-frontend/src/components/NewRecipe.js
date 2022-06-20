@@ -14,15 +14,40 @@ export default function NewRecipe () {
         cuisineType: '',
         mealType: '',
         authorId: '',
-        instructions: ''
+        instructions: '',
+        ingredients: [],
+        likes: {
+            isLiked: false,
+            authorId: [],
+            userId: ''
+        }
     });
     const [errors, setErrors] = useState({});
+    const [ingredient, setIngriedient] = useState('');
+    const [ingredientsArray, setIngredientsArray] = useState([])
     const handleInputChange = e => {
         const { name, value } = e.target;
         setValues({
             ...values,
             [name]:value
         })
+    }
+
+    const handleIngriedientChange = e => {
+        const { name, value } = e.target;
+        setIngriedient(value);
+    }
+
+    function addIngredient () {
+        if(ingredientsArray != null) {
+            let someArray = ingredientsArray;
+            someArray.push(ingredient);
+            setIngredientsArray(someArray);
+        } else {
+            setIngredientsArray([ingredient])
+        }
+        
+        setIngriedient('');
     }
 
     const recipeAPI = (url = variables.API_URL + 'Recipe/') => {
@@ -82,6 +107,14 @@ export default function NewRecipe () {
             formData.append('mealType', values.mealType);
             formData.append('authorId', user.id);
             formData.append('instructions', values.instructions);
+            
+            for(let likesKey in values['likes']) {
+                formData.append(`likes[${likesKey}]`, values['likes'][likesKey]);
+            }
+                
+            for (let i = 0; i < ingredientsArray.length; i++) {
+                formData.append('ingredients', ingredientsArray[i])
+            }
             addOrEdit(formData, resetForm);
         }
     }
@@ -94,7 +127,7 @@ export default function NewRecipe () {
         recipeAPI().create(formData)
         .then(res => {
             onSuccess();
-            navigate("/recipe/" + res.data.id)
+            navigate("/viewRecipe/" + res.data.id)
         })
         .catch(err => console.log(err))
     }
@@ -118,6 +151,15 @@ export default function NewRecipe () {
                                 value={values.description}
                                 onChange = {handleInputChange} />
                         </div>
+                        <div className="form-control">
+                            {ingredientsArray}
+                        </div>
+                        <div>
+                            <input placeholder="Add ingredient..." name="ingredient" className={"form-control" + applyErrorClass('recipeIngredient')}
+                                value={ingredient}
+                                onChange = {handleIngriedientChange} />
+                            <div onClick={addIngredient}>Add</div>
+                        </div>
                         <div>
                             <textarea placeholder="Recipe Instructions" name="instructions" className={"form-control" + applyErrorClass('recipeInstructions')}
                                 value={values.instructions}
@@ -130,13 +172,13 @@ export default function NewRecipe () {
                             <option value={"French"}>French</option>
                         </select>
                         <select name="mealType" onChange = {handleInputChange} value={values.mealType}>
-                            <option value={"breakfast"}>Breakfast</option>
-                            <option value={"dinner"}>Dinner</option>
-                            <option value={"supper"}>Supper</option>
-                            <option value={"dessert"}>Dessert</option>
+                            <option value={"Breakfast"}>Breakfast</option>
+                            <option value={"Dinner"}>Dinner</option>
+                            <option value={"Supper"}>Supper</option>
+                            <option value={"Dessert"}>Dessert</option>
                         </select>
                         <div>
-                            <button type="submit">Submit</button>
+                            <button className="btn" type="submit">Submit</button>
                         </div>
                     </div>
                 </div>

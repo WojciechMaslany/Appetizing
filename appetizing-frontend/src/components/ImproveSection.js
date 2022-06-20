@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Improve(props) {
     const list = [
         "Learn new recipes",
@@ -7,6 +9,12 @@ export default function Improve(props) {
         "Get cooking tips",
         "Get ranked"
     ]
+
+    const navigate = useNavigate();
+
+    const goToRegistration = () => {
+        navigate("/register")
+    }
 
     return (
         <div className="section improve">
@@ -18,7 +26,7 @@ export default function Improve(props) {
                 { list.map((item, index) => (
                     <p className="skill-item" key={index}>{item}</p>
                 ))}
-                <button className="btn" onClick={props.props}>Signup now</button>
+                <button className="btn" onClick={() => {goToRegistration()}}>Signup now</button>
             </div>
         </div>
     )
