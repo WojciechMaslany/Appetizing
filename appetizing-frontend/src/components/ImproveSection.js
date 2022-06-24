@@ -5,9 +5,9 @@ export default function Improve(props) {
         "Learn new recipes",
         "Experiment with food",
         "Write your own recipes",
-        "Get to know nutrition facts",
+        "Share your experience",
         "Get cooking tips",
-        "Get ranked"
+        "Discuss food topics"
     ]
 
     const navigate = useNavigate();

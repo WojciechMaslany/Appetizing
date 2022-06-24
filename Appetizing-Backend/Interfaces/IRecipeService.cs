@@ -12,6 +12,8 @@ namespace Appetizing_Backend.Interfaces
         List<Recipe> SortByCuisine(string cuisine);
         List<Recipe> SortByMealType(string mealType);
 
+        List<Recipe> GetUserRecipes(string userId);
+
         string AddFavorite(Recipe recipe);
     }
 }

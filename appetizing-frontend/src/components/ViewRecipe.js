@@ -122,9 +122,6 @@ export default function ViewRecipe() {
                                 <li>{ingredient}</li>
                             )    
                             }</p>
-                            <p>{values.likes.isLiked}</p>
-                            <p>{values.likes.userId}</p>
-                            <p>{values.likes.authorId[0]}</p>
                         </div>
                     </div>
                 </div>

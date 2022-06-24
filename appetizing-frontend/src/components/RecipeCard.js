@@ -23,12 +23,14 @@ export default function RecipeCard({recipe, onDelete, editRecipe, viewRecipe, ad
     useEffect(() => {
         if(loading === true) {
             checkOwner();
-            let isItThere = recipe.likes.authorId.find(element => element === user.id)
-            if (isItThere) {
-                setFavorite(true);
+            if(user != null & recipe.likes != null) {
+                let isItThere = recipe.likes.authorId.find(element => element === user.id)
+                if (isItThere) {
+                    setFavorite(true);
+                }
             }
-            setAuthorImagePreview(recipe.authorId);
         }
+        setAuthorImagePreview(recipe.authorId);
     })
 
     const setAuthorImagePreview = (authorId) => {
@@ -40,22 +42,24 @@ export default function RecipeCard({recipe, onDelete, editRecipe, viewRecipe, ad
     }
 
     function checkOwner() {
-        if (user) {
+        if (user != null) {
             setUserId(user.id);
         }
     }
 
     const prepareFavorite = (recipe) => {
-        recipe.likes.userId = user.id;
-        if (favorite === false) {
-            setFavorite(true);
-            recipe.likes.isLiked = true;
-            addToFavorites(recipe);
-        }
-        else {
-            setFavorite(false);
-            recipe.likes.isLiked = false;
-            addToFavorites(recipe);
+        if(user != null) {
+            recipe.likes.userId = user.id;
+            if (favorite === false) {
+                setFavorite(true);
+                recipe.likes.isLiked = true;
+                addToFavorites(recipe);
+            }
+            else {
+                setFavorite(false);
+                recipe.likes.isLiked = false;
+                addToFavorites(recipe);
+            }
         }
     }
 

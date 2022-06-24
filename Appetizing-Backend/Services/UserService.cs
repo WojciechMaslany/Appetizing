@@ -33,6 +33,14 @@ namespace Appetizing_Backend.Services
             return user;
         }
 
+        public List<User> GetTopUsers()
+        {
+            var users = GetUsers();
+            var topUsers = users.OrderByDescending(x => x.UserRecipesCount).Take(6).ToList();
+
+            return topUsers;
+        }
+
         public string Authenticate(string username, string password)
         {
             var user = _users.Find(x => x.Username == username && x.Password == password).FirstOrDefault();

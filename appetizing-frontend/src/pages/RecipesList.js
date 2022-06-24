@@ -91,13 +91,16 @@ export default function RecipesList() {
         <div className="any-item">
         <div className="recipes-list-actions" style={{margin: 'auto'}}>
                 <div className="action-items-container">  
-                    <div className="action-item"><Link style={{ textDecoration: 'none', color: '#fff'}} to={"/recipe"}>Add Recipe</Link></div> 
+                    {isUserLoggedIn === true ? 
+                        <div className="action-item"><Link style={{ textDecoration: 'none', color: '#fff'}} to={"/recipe"}>Add Recipe</Link></div> :
+                        null
+                    }  
                 </div> 
             </div> 
             <div className="previous-searches">
                 <div className="search-box">
                     <input type="text" 
-                        placeholder="Search..."
+                        placeholder="Search for recipe or ingredients..."
                         onChange={(event) => {
                             setSearchTerm(event.target.value);
                         }}

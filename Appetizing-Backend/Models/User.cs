@@ -26,5 +26,8 @@ namespace Appetizing_Backend.Models
 
         [BsonIgnore]
         public string? ImageSrc { get; set; }
+
+        public int? UserRecipesCount { get; set; }
+        public string? UserFavoriteCuisine { get; set; }
     }
 }

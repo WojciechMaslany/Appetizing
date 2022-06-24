@@ -35,7 +35,9 @@ namespace Appetizing_Backend.Controllers
                 Email = user.Email,
                 Username = user.Username,
                 Password = user.Password,
-                ImageSrc = String.Format("{0}://{1}{2}/Images/Users/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImageName)
+                ImageSrc = String.Format("{0}://{1}{2}/Images/Users/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImageName),
+                UserRecipesCount = user.UserRecipesCount,
+                UserFavoriteCuisine = user.UserFavoriteCuisine
             };
             return Json(userToSend);
         }
@@ -47,6 +49,14 @@ namespace Appetizing_Backend.Controllers
             user.ImageName = await SaveImage(user.ImageFile);
             _userService.Create(user);
             return Json(user);
+        }
+
+        [AllowAnonymous]
+        [Route("GetTopUsers")]
+        [HttpGet]
+        public ActionResult<List<User>> GetTopUsers()
+        {
+            return _userService.GetTopUsers();
         }
 
         [AllowAnonymous]

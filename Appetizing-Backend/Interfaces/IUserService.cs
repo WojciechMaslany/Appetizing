@@ -9,6 +9,7 @@ namespace Appetizing_Backend.Interfaces
         User GetUser(string id);
         User GetUserByEmail(string email);
         User GetUserByUsername(string username);
+        List<User> GetTopUsers();
         string Authenticate(string email, string password);
     }
 }

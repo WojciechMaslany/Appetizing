@@ -7,14 +7,27 @@ namespace Appetizing_Backend.Services
     public class RecipeService : IRecipeService
     {
         private readonly IMongoCollection<Recipe> _recipes;
+        private readonly IMongoCollection<User> _users;
         public RecipeService(IDbClient dbClient)
         {
             _recipes = dbClient.GetRecipesCollection();
+            _users = dbClient.GetUsersCollection();
         }
 
         public Recipe AddRecipe(Recipe recipe)
         {
             _recipes.InsertOne(recipe);
+            var user = _users.Find(user => user.Id == recipe.AuthorId).First();
+
+            if(user != null)
+            {
+                var userRecipes = _recipes.Find(rec => rec.AuthorId == recipe.AuthorId).ToList();
+                var most = userRecipes.GroupBy(i => i.CuisineType).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
+                user.UserRecipesCount = userRecipes.Count;
+                user.UserFavoriteCuisine = most;
+                _users.ReplaceOne(u => u.Id == user.Id, user);
+            }
+            
             return recipe;
         }
 
@@ -25,6 +38,8 @@ namespace Appetizing_Backend.Services
 
         public List<Recipe> GetRecipes() => _recipes.Find(recipe => true).ToList();
 
+        public List<Recipe> GetUserRecipes(string userId) => _recipes.Find(recipe => recipe.AuthorId == userId).ToList();
+        
         public Recipe UpdateRecipe(Recipe recipe)
         {
             GetRecipe(recipe.Id);
