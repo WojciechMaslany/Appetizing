@@ -31,7 +31,21 @@ namespace Appetizing_Backend.Services
             return recipe;
         }
 
-        public void DeleteRecipe(string id) => _recipes.DeleteOne(recipe => recipe.Id == id);
+        public void DeleteRecipe(string id)
+        {
+            _recipes.DeleteOne(recipe => recipe.Id == id);
+            var recipe = GetRecipe(id);
+            var user = _users.Find(user => user.Id == recipe.AuthorId).First();
+
+            if (user != null)
+            {
+                var userRecipes = _recipes.Find(rec => rec.AuthorId == recipe.AuthorId).ToList();
+                var most = userRecipes.GroupBy(i => i.CuisineType).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
+                user.UserRecipesCount = userRecipes.Count;
+                user.UserFavoriteCuisine = most;
+                _users.ReplaceOne(u => u.Id == user.Id, user);
+            }
+        } 
 
         public Recipe GetRecipe(string id) => _recipes.Find(recipe => recipe.Id == id).First();
            
