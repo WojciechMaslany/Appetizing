@@ -86,7 +86,9 @@ namespace Appetizing_Backend.Controllers
                 Username = user.Username,
                 Password = user.Password,
                 accessToken = token,
-                ImageSrc = String.Format("{0}://{1}{2}/Images/Users/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImageName)
+                ImageSrc = String.Format("{0}://{1}{2}/Images/Users/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImageName),
+                UserRecipesCount = user.UserRecipesCount,
+                UserFavoriteCuisine = user.UserFavoriteCuisine
             };
             return Ok(userToSend);
         }

@@ -36,6 +36,25 @@ namespace Appetizing_Backend.Controllers
             }));
         }
 
+        [HttpGet("{id}", Name = "GetUserRecipes")]
+        public IActionResult GetUserRecipes(string id)
+        {
+            return Ok(_recipeService.GetUserRecipes(id).Select(x => new Recipe()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                ImageName = x.ImageName,
+                ImageSrc = String.Format("{0}://{1}{2}/Images/Recipes/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
+                CuisineType = x.CuisineType,
+                MealType = x.MealType,
+                AuthorId = x.AuthorId,
+                Instructions = x.Instructions,
+                Ingredients = x.Ingredients,
+                Likes = x.Likes
+            }));
+        }
+
         [HttpGet("{id}", Name = "GetRecipe")]
         public IActionResult GetRecipe(string id)
         {
