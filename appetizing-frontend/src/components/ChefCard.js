@@ -4,11 +4,11 @@ import { faFacebook, faTwitter, faInstagram } from "@fortawesome/free-brands-svg
 export default function ChefCard({chef}) {
     return (
         <div className="chef-card">
-            <img src={chef.img} alt="" />
+            <img src={chef.imageSrc} alt="" />
             <div className="chef-card-info">
-                <h3 className="chef-card-name">{chef.name}</h3>
-                <p className="chef-recipe-count">Recipes: <b>{chef.recipesCount}</b></p>
-                <p className="chef-cuisine">Ciusine: <b>{chef.cuisine}</b></p>
+                <h3 className="chef-card-name">{chef.username}</h3>
+                <p className="chef-recipe-count">Recipes: <b>{chef.userRecipesCount}</b></p>
+                <p className="chef-cuisine">Ciusine: <b>{chef.userFavoriteCuisine}</b></p>
                 <p className="chef-icons">
                     <FontAwesomeIcon icon={faFacebook} />
                     <FontAwesomeIcon icon={faTwitter} />

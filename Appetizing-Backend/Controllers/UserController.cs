@@ -56,7 +56,16 @@ namespace Appetizing_Backend.Controllers
         [HttpGet]
         public ActionResult<List<User>> GetTopUsers()
         {
-            return _userService.GetTopUsers();
+            return Ok(_userService.GetTopUsers().Select(x => new User()
+            {
+                Id = x.Id,
+                Email = x.Email,
+                Username = x.Username,
+                Password = x.Password,
+                ImageSrc = String.Format("{0}://{1}{2}/Images/Users/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
+                UserRecipesCount = x.UserRecipesCount,
+                UserFavoriteCuisine = x.UserFavoriteCuisine
+            }));
         }
 
         [AllowAnonymous]
