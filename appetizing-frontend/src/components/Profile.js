@@ -9,6 +9,7 @@ import { Link} from "react-router-dom";
 const recipeAPI = (url = variables.API_URL + 'Recipe/') => {
   return {
       getUserRecipes: (id) => axios.get(`${url}GetUserRecipes/${id}`),
+      getFavoriteRecipes: (id) => axios.get(`${url}GetFavoriteRecipes/${id}`),
       update: (updatedRecord) => axios.put(url + "UpdateRecipe", updatedRecord),
       delete: (id, imageName) => axios.delete(`${url}DeleteRecipe/${id}/${imageName}`),
   }
@@ -19,6 +20,7 @@ class Profile extends Component {
     super(props);
     this.state = {
       recipeList: [],
+      favRecipeList: [],
       userId: props.user.id
     }
   }
@@ -28,6 +30,12 @@ class Profile extends Component {
     .then(res => {
       this.setState({
         recipeList: res.data
+      })
+    })
+    recipeAPI().getFavoriteRecipes(this.state.userId)
+    .then(res => {
+      this.setState({
+        favRecipeList: res.data
       })
     })
   }
@@ -109,6 +117,29 @@ class Profile extends Component {
                               </Link>
                             </button>
                             <button className="btn btn-primary" onClick={() => this.deleteRecipe(recipe)}>Delete</button>
+                        </div>
+                    </div>
+                  </div>
+              )
+            })}
+            </div>
+          </div> 
+          <div className="container-lg">
+            <h1>Your favorite recipes:</h1>
+            <div className="row">
+            {this.state.favRecipeList.map((recipe) => {
+              return (
+                  <div className="col-xl-4 col-md-6 col-xxl-3">
+                    <div className="card" style={{width: "300px", height: "auto"}}>
+                        <img src={recipe.imageSrc} style={{width:"200px", height: "200px", objectFit: "cover", margin: "auto"}} className="card-img-top" alt="..."/>
+                        <div className="card-body text-center">
+                            <h5 className="card-title">{recipe.name}</h5>
+                            <p className="card-text">{recipe.description}</p>
+                            <button className="btn btn-primary">
+                              <Link to={"/viewRecipe/" + recipe.id} style={{textDecoration: 'none', color: 'white'}}>
+                                View
+                              </Link>
+                            </button>
                         </div>
                     </div>
                   </div>

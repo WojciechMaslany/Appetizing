@@ -76,6 +76,25 @@ namespace Appetizing_Backend.Controllers
             return Ok(recipeToSend);
         }
 
+        [HttpGet("{id}", Name = "GetFavoriteRecipes")]
+        public IActionResult GetFavoriteRecipes(string id)
+        {
+            return Ok(_recipeService.GetFavoriteRecipes(id).Select(x => new Recipe()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                ImageName = x.ImageName,
+                ImageSrc = String.Format("{0}://{1}{2}/Images/Recipes/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
+                CuisineType = x.CuisineType,
+                MealType = x.MealType,
+                AuthorId = x.AuthorId,
+                Instructions = x.Instructions,
+                Ingredients = x.Ingredients,
+                Likes = x.Likes
+            }));
+        }
+
         [HttpDelete("{id}/{imageName}")]
         public IActionResult DeleteRecipe(string id, string imageName)
         {

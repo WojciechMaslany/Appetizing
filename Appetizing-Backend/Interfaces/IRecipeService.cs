@@ -15,5 +15,7 @@ namespace Appetizing_Backend.Interfaces
         List<Recipe> GetUserRecipes(string userId);
 
         string AddFavorite(Recipe recipe);
+
+        List<Recipe> GetFavoriteRecipes(string userId);
     }
 }

@@ -104,5 +104,10 @@ namespace Appetizing_Backend.Services
             }
             return "";
         }
+
+        public List<Recipe> GetFavoriteRecipes(string userId)
+        {
+            return _recipes.Find(recipe => recipe.Likes.AuthorId.Contains(userId)).ToList();
+        } 
     }
 }
