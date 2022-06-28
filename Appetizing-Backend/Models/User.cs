@@ -17,6 +17,8 @@ namespace Appetizing_Backend.Models
 
         [BsonElement("Password")]
         public string Password { get; set; }
+        [BsonElement("Role")]
+        public string Role { get; set; } = "User";
 
         public string? accessToken { get; set; }
         public string? ImageName { set; get; }

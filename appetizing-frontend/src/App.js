@@ -12,6 +12,7 @@ import RecipesList from "./pages/RecipesList";
 import Settings from "./pages/Settings";
 import  Recipe  from "./components/Recipe"
 import  Login  from "./components/Login"
+import Admin from "./components/Admin";
 import Profile from "./components/Profile"
 import Register from "./components/Register"
 import NewRecipe from "./components/NewRecipe"
@@ -28,7 +29,6 @@ class App extends Component {
     this.logOut = this.logOut.bind(this);
 
     this.state = {
-      showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
     };
@@ -84,6 +84,12 @@ class App extends Component {
 
             {currentUser ? (
               <div className="nav-links" >
+                  {currentUser.role === "Admin" ? (
+                    <Link to={"/admin"} className="/admmin active">
+                      Admin Panel
+                    </Link>) : (null)
+                  }
+                  
                   <Link to={"/recipes"} className="/login active">
                     Recipes
                   </Link>
@@ -120,6 +126,7 @@ class App extends Component {
               <Route path="/recipe" element={<NewRecipe/>}/>
               <Route path="/profile" element= {<Profile/>}/>
               <Route path="/register" element= {<Register/>}/>
+              <Route path="/admin" element= {<Admin/>}/>
             </Routes>
           </div>
         </div>

@@ -18,6 +18,7 @@ namespace Appetizing_Backend.Controllers
             this._hostEnvironment = hostEnvironment;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<List<User>> GetUsers()
         {
@@ -35,6 +36,7 @@ namespace Appetizing_Backend.Controllers
                 Email = user.Email,
                 Username = user.Username,
                 Password = user.Password,
+                Role = user.Role,
                 ImageSrc = String.Format("{0}://{1}{2}/Images/Users/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImageName),
                 UserRecipesCount = user.UserRecipesCount,
                 UserFavoriteCuisine = user.UserFavoriteCuisine
@@ -62,6 +64,7 @@ namespace Appetizing_Backend.Controllers
                 Email = x.Email,
                 Username = x.Username,
                 Password = x.Password,
+                Role = x.Role,
                 ImageSrc = String.Format("{0}://{1}{2}/Images/Users/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
                 UserRecipesCount = x.UserRecipesCount,
                 UserFavoriteCuisine = x.UserFavoriteCuisine
@@ -85,6 +88,7 @@ namespace Appetizing_Backend.Controllers
                 Email = user.Email,
                 Username = user.Username,
                 Password = user.Password,
+                Role = user.Role,
                 accessToken = token,
                 ImageSrc = String.Format("{0}://{1}{2}/Images/Users/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImageName),
                 UserRecipesCount = user.UserRecipesCount,

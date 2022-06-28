@@ -3,7 +3,6 @@ import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
 import { variables } from "../Variables"
 import axios from "axios";
-import RecipeCard from "../components/RecipeCard"
 import { Link} from "react-router-dom";
 
 const recipeAPI = (url = variables.API_URL + 'Recipe/') => {
