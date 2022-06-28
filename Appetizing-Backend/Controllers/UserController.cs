@@ -54,6 +54,15 @@ namespace Appetizing_Backend.Controllers
         }
 
         [AllowAnonymous]
+        [HttpDelete("DeleteUser/{id}/{imageName}")]
+        public IActionResult DeleteUser(string id, string imageName)
+        {
+            DeleteImage(imageName);
+            _userService.DeleteUser(id);
+            return NoContent();
+        }
+
+        [AllowAnonymous]
         [Route("GetTopUsers")]
         [HttpGet]
         public ActionResult<List<User>> GetTopUsers()

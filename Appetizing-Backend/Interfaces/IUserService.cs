@@ -6,6 +6,7 @@ namespace Appetizing_Backend.Interfaces
     {
         List<User> GetUsers();
         User Create(User user);
+        void DeleteUser(string id);
         User GetUser(string id);
         User GetUserByEmail(string email);
         User GetUserByUsername(string username);

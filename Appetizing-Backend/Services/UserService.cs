@@ -33,6 +33,11 @@ namespace Appetizing_Backend.Services
             return user;
         }
 
+        public void DeleteUser(string userId)
+        {
+            _users.DeleteOne(user => user.Id == userId);
+        }
+
         public List<User> GetTopUsers()
         {
             var users = GetUsers();
