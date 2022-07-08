@@ -223,7 +223,7 @@ export default function Recipe () {
                             <input placeholder="Add ingredient..." name="ingredient" className={"form-control" + applyErrorClass('recipeIngredient')}
                                 value={ingredient}
                                 onChange = {handleIngriedientChange} />
-                            <div onClick={addIngredient}>Add</div>
+                            <div className="btn" onClick={addIngredient}>Add</div>
                         </div>
                         <select className="form-select" name="cuisineType" onChange = {handleInputChange} value={values.cuisineType}>
                             <option value={"Asian"}>Asian</option>

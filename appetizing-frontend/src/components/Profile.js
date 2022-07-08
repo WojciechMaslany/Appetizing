@@ -82,10 +82,6 @@ class Profile extends Component {
                             <p className="small text-muted mb-1">Favorite Cuisine</p>
                             <p className="mb-0">{currentUser.userFavoriteCuisine}</p>
                           </div>
-                          <div>
-                            <p className="small text-muted mb-1">Rating</p>
-                            <p className="mb-0">8.5</p>
-                          </div>
                         </div>
                       </div>
                     </div>

@@ -158,7 +158,7 @@ export default function NewRecipe () {
                             <input placeholder="Add ingredient..." name="ingredient" className={"form-control" + applyErrorClass('recipeIngredient')}
                                 value={ingredient}
                                 onChange = {handleIngriedientChange} />
-                            <div onClick={addIngredient}>Add</div>
+                            <div className="btn" onClick={addIngredient}>Add ingredient</div>
                         </div>
                         <div>
                             <textarea placeholder="Recipe Instructions" name="instructions" className={"form-control" + applyErrorClass('recipeInstructions')}
